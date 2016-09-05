@@ -8,6 +8,7 @@
   apt:
     name: "{{ item }}"
     state: present
+    run_once: true
     force: yes
   with_items:
   - php-cli
