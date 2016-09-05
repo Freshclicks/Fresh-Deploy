@@ -1,9 +1,10 @@
 ---
-- name: Install PHP 7.0
-  apt:
-    name: php7.0
-    state: present
-    force: yes
+
+pre_tasks:
+  - name: Add PHP 7.0 PPA
+    apt_repository:
+      repo: "ppa:ondrej/php"
+      update_cache: yes
 
 - name: Install PHP 7.0
   apt:
@@ -11,6 +12,7 @@
     state: present
     force: yes
   with_items:
+  - php7.0
   - php7.0-cli
   - php7.0-common
   - php7.0-curl
