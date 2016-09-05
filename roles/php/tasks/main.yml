@@ -1,7 +1,7 @@
 ---
-- name: Add PHP repo
-  apt_repository:
-    repo: ppa:ondrej/php
+#- name: Add PHP repo
+#  apt_repository:
+#    repo: ppa:ondrej/php
 
 - name: Install PHP 7.0
   apt:
@@ -9,19 +9,20 @@
     state: present
     force: yes
   with_items:
-  - php7.0-cli
-  - php7.0-common
-  - php7.0-curl
-  - php7.0-dev
-  - php7.0-fpm
-  - php7.0-gd
-  - php7.0-mbstring
-  - php7.0-mcrypt
-  - php7.0-mysql
-  - php7.0-opcache
-  - php7.0-xml
-  - php7.0-xmlrpc
-  - php7.0-zip
+  -php
+  - php-cli
+  - php-common
+  - php-curl
+  - php-dev
+  - php-fpm
+  - php-gd
+  - php-mbstring
+  - php-mcrypt
+  - php-mysql
+  - php-opcache
+  - php-xml
+  - php-xmlrpc
+  - php-zip
 
 - name: Install Xdebug
   apt:
