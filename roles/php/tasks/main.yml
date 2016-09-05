@@ -3,12 +3,11 @@
   apt_repository:
     repo: ppa:ondrej/php
 
-- name: Install PHP
+- name: Install PHP 7.0
   apt:
     name: "{{ item }}"
     state: present
     force: yes
-    update_cache: yes
   with_items:
   - php7.0-cli
   - php7.0-common
@@ -23,52 +22,39 @@
   - php7.0-xml
   - php7.0-xmlrpc
   - php7.0-zip
-  - php-redis
 
-- name: Set PHP user
-  lineinfile: 
-    dest: /etc/php/7.0/fpm/pool.d/www.conf
-    regexp: "^user"
-    line: "user = {{ username }}"
-    state: present
-  notify: restart php
+- name: Install Xdebug
+  apt:
+    name: php-xdebug
+    state: latest
+  when: xdebug_install | default(false)
 
-- name: Set PHP group    
-  lineinfile: 
-    dest: /etc/php/7.0/fpm/pool.d/www.conf
-    regexp: "^group"
-    line: "group = {{ username }}"
-    state: present
-  notify: restart php
+- name: xdebug configuration file
+  template:
+    src: xdebug.ini.j2
+    dest: /etc/php/7.0/mods-available/xdebug.ini
+  when: xdebug_install | default(false)
 
-- name: Set PHP listen owner    
-  lineinfile: 
-    dest: /etc/php/7.0/fpm/pool.d/www.conf
-    regexp: "^listen\\.owner"
-    line: "listen.owner = {{ username }}"
-    state: present
-  notify: restart php
+- name: Start php7.0-fpm service
+  service:
+    name: php7.0-fpm
+    state: started
+    enabled: true
 
-- name: Set PHP listen group    
-  lineinfile: 
-    dest: /etc/php/7.0/fpm/pool.d/www.conf
-    regexp: "^listen\\.group"
-    line: "listen.group = {{ username }}"
-    state: present
-  notify: restart php
+- name: Create socket directory
+  file:
+    path: /var/run/php7.0-fpm/
+    state: directory
 
-- name: Set PHP upload max filesize    
-  lineinfile: 
+- name: Disable default pool
+  command: mv /etc/php/7.0/fpm/pool.d/www.conf /etc/php/7.0/fpm/pool.d/www.disabled
+  args:
+    creates: /etc/php/7.0/fpm/pool.d/www.disabled
+  when: disable_default_pool
+  notify: reload php-fpm
+
+- name: PHP configuration file
+  template:
+    src: php.ini.j2
     dest: /etc/php/7.0/fpm/php.ini
-    regexp: "^upload_max_filesize"
-    line: "upload_max_filesize = 128M"
-    state: present
-  notify: reload php
-
-- name: Set PHP post max filesize    
-  lineinfile: 
-    dest: /etc/php/7.0/fpm/php.ini
-    regexp: "^post_max_size"
-    line: "post_max_size = 128M"
-    state: present
-  notify: reload php  
+  notify: reload php-fpm
