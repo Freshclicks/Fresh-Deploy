@@ -1,0 +1,18 @@
+---
+- hosts: all
+  connection: local
+  sudo: yes
+
+  roles:
+    - common
+    # - { role: hhvm, when: ansible_lsb.major_release | int >= 14 }
+    # - php-fpm
+    - php
+    - memcached
+    # - percona
+    # - mariadb
+    - { role: mariadb, tags: [mariadb] }
+    - nginx
+    - wp-cli
+    # - varnish
+    - { role: sites, enviro: php, tags: [ 'sites' ] }
