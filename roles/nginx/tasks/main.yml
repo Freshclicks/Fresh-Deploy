@@ -1,65 +1,18 @@
 ---
-- name: Add Nginx PPA
-  apt_repository:
-    repo: "ppa:nginx/development"
-    update_cache: yes
+- name: Install Nginx GPG key
+  run_once: true
+  apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
 
-- name: Install Nginx
-  apt:
-    name: nginx
-    state: present
-    force: yes
+- name: Enable Nginx stable repo
+  run_once: true
+  apt_repository: repo='deb http://nginx.org/packages/ubuntu {{ ansible_lsb.codename }} nginx' state=present update_cache=yes
 
-- name: Create SSL directory
-  file:
-    mode: 0700
-    path: "{{ nginx_path }}/ssl"
-    state: directory
-
-- name: Generate strong unique Diffie-Hellman group.
-  command: openssl dhparam -out dhparams.pem 2048
-  args:
-    chdir: "{{ nginx_path }}/ssl"
-    creates: "{{ nginx_path }}/ssl/dhparams.pem"
-  notify: reload nginx
-  tags: [diffie-hellman]
-
-- name: Grab h5bp/server-configs-nginx
-  git:
-    repo: "https://github.com/h5bp/server-configs-nginx.git"
-    dest: "{{ nginx_path }}/h5bp-server-configs"
-    version: 82181a672a7c26f9bc8744fead80318d8a2520b1
-    force: yes
-
-- name: Move h5bp configs
-  command: cp -R {{ nginx_path }}/h5bp-server-configs/h5bp {{ nginx_path }}/h5bp
-  args:
-    creates: "{{ nginx_path }}/h5bp/"
-
-- name: Create nginx.conf
-  template:
-    src: nginx.conf.j2
-    dest: "{{ nginx_path }}/nginx.conf"
-  notify: reload nginx
-
-
-- name: Do nginx upstream.conf
-  template:
-    src: upstream.conf.j2
-    dest: "{{ nginx_path }}/conf.d/upstream.conf"
-  notify: reload nginx
-
-- name: Disable default server
-  file:
-    path: "{{ nginx_path }}/sites-enabled/default"
-    state: absent
-  notify: reload nginx
-
-- name: Enable better default site to drop unknown requests
-  command: cp {{ nginx_path }}/h5bp-server-configs/sites-available/no-default {{ nginx_path }}/sites-enabled/no-default.conf
-  args:
-    creates: "{{ nginx_path }}/sites-enabled/no-default.conf"
-  notify: reload nginx
+- name: Install nginx
+  run_once: true
+  apt: name=nginx state=present
+  notify:
+    - nginx restart
+    - update-rc nginx
 
 - name: Ensure /etc/nginx directories exist
   run_once: true
@@ -68,12 +21,36 @@
     - /etc/nginx/sites-available
     - /etc/nginx/sites-enabled
 
-#- name: Create base WordPress config
-#  template:
-#    src: wordpress.conf.j2
-#    dest: "{{ nginx_path }}/wordpress.conf"
+- name: Configure /etc/nginx/nginx.conf
+  run_once: true
+  template: src=etc/nginx/nginx.conf dest=/etc/nginx/nginx.conf owner=root group=root mode=0644
+  notify: nginx restart
 
-#- name: Create base WordPress subdirectory Multisite config
-#  template:
-#    src: wordpress_multisite_subdirectories.conf.j2
-#    dest: "{{ nginx_path }}/wordpress_multisite_subdirectories.conf"
+- name: Do nginx upstream.conf
+  run_once: true
+  template: src=etc/nginx/conf.d/upstream.conf dest=/etc/nginx/conf.d/upstream.conf owner=root group=root mode=0644
+  notify: nginx restart
+
+- name: Remove default.conf
+  run_once: true
+  file: path=/etc/nginx/sites-enabled/default state=absent
+
+- name: Remove default conf.d
+  run_once: true
+  file: path=/etc/nginx/conf.d/default.conf state=absent
+
+- name: Remove example ssl conf.d
+  run_once: true
+  file: path=/etc/nginx/conf.d/example_ssl.conf state=absent
+
+- name: Ensure main docroot exists
+  run_once: true
+  file: path={{ www_root }} state=directory
+
+- name: Set up master docroot
+  run_once: true
+  file: path={{ www_root }} state=directory owner={{ web_user }} group={{ web_group }} mode=0775
+
+- name: Make sure Nginx is running
+  run_once: true
+  service: name=nginx state=started enabled=yes
