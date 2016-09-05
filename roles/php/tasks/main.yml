@@ -9,7 +9,7 @@
     state: present
     force: yes
   with_items:
-  -php
+  - php
   - php-cli
   - php-common
   - php-curl
