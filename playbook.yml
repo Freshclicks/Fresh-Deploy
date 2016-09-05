@@ -15,4 +15,4 @@
     - nginx
     - wp-cli
     # - varnish
-    # - { role: sites, enviro: php, tags: [ 'sites' ] }
+    - { role: sites, enviro: php, tags: [ 'sites' ] }
