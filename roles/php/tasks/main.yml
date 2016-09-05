@@ -1,6 +1,6 @@
 ---
- - name: Install PHP 7.0
-   apt:
+- name: Install PHP 7.0
+  apt:
     name: php7.0
     state: present
     force: yes
