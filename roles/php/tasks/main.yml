@@ -1,8 +1,9 @@
 ---
-- name: Add PHP 7.0 PPA
-  apt_repository:
-    repo: "ppa:ondrej/php"
-    update_cache: yes
+ - name: Install PHP 7.0
+   apt:
+    name: php7.0
+    state: present
+    force: yes
 
 - name: Install PHP 7.0
   apt:
