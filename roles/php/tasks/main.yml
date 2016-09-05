@@ -1,11 +1,5 @@
 ---
 
-pre_tasks:
-  - name: Add PHP 7.0 PPA
-    apt_repository:
-      repo: "ppa:ondrej/php"
-      update_cache: yes
-
 - name: Install PHP 7.0
   apt:
     name: "{{ item }}"
