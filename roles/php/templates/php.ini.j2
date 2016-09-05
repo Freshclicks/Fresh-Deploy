@@ -16,6 +16,9 @@ upload_max_filesize = {{ php_upload_max_filesize }}
 expose_php = Off
 date.timezone = {{ php_default_timezone }}
 
+[cgi]
+cgi.fix_pathinfo = 0;
+
 [mysqlnd]
 mysqlnd.collect_memory_statistics = {{ php_mysqlnd_collect_memory_statistics }}
 
