@@ -12,7 +12,7 @@ I recommend using Digital Ocean servers, and if you use this link https://m.do.c
 This Playbook will setup:
 
 - **MariaDB** (MySQL)
-- **PHP-FPM** (Backup PHP 7)
+- **PHP-FPM** (Native PHP 7)
 - **Nginx**
 - **Memcached and APC**
 - **WP-CLI**
@@ -29,7 +29,7 @@ This Playbook will setup:
 5. Clone this repository with `git clone https://github.com/Freshclicks/fresh-deploy.git`
 6. Move into `cd fresh-deploy`
 7. Edit the `hosts` file and your host name. If you have more than one website that you want to install on this server add each on a new line.
-8. Run Ansible with `sudo ansible-playbook -i hosts playbook.yml -c local`. If you have any errors please open a new issue in this repository.
+8. Run Ansible with `sudo ansible-playbook -i hosts playbook.yml -c local`. If you have any errors please open a new issue in this repository. (It may fail the first time. Just run it again and you should be good to go)
 9. Remove the cloned git directory from your server with `rm -rf fresh-deploy/`
 12. Run `/usr/bin/mysql_secure_installation` to secure MariaDB. Your root password will be root by default
 13. Restart Nginx with: `sudo service nginx restart`
