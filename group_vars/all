@@ -7,3 +7,5 @@ phpmemcachedadmin_version: 1.2.2-r262
 wpcli_version: WP-CLI 0.17.1
 web_user: www-data
 web_group: www-data
+ip_whitelist:
+  - "{{ lookup('pipe', 'curl -4 -s https://api.ipify.org') }}"
