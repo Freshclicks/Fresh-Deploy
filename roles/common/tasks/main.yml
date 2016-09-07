@@ -5,28 +5,35 @@
   sudo: yes
   with_items:
     - sysv-rc-conf
-    # - python-apt
     - python-pycurl
     - python-mysqldb
-    # - git
+    - python-software-properties
+    - build-essential
     - curl
     - unzip
-    # - php5-mysql
-    # - php-fpm
-    # - php-mysql
     - traceroute
     - ack-grep
     - subversion
     - autojump
     - siege
 
-    - python-software-properties
-    # - python-pycurl
-    - build-essential
     # - python-mysqldb
     # - curl
     - git-core
     - dbus
+    - php-cli
+    - php-common
+    - php-curl
+    - php-dev
+    - php-fpm
+    - php-gd
+    - php-mbstring
+    - php-mcrypt
+    - php-mysql
+    - php-opcache
+    - php-xml
+    - php-xmlrpc
+    - php-zip
 
 - name: Get Composer
   run_once: true

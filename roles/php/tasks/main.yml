@@ -4,25 +4,25 @@
 #    repo: "ppa:ondrej/php"
 #    update_cache: yes
 
-- name: Install PHP 7.0
-  apt:
-    name: "{{ item }}"
-    state: present
-    force: yes
-  with_items:
-  - php-cli
-  - php-common
-  - php-curl
-  - php-dev
-  - php-fpm
-  - php-gd
-  - php-mbstring
-  - php-mcrypt
-  - php-mysql
-  - php-opcache
-  - php-xml
-  - php-xmlrpc
-  - php-zip
+#- name: Install PHP 7.0
+#  apt:
+#    name: "{{ item }}"
+#    state: present
+#    force: yes
+#  with_items:
+#  - php-cli
+#  - php-common
+#  - php-curl
+#  - php-dev
+#  - php-fpm
+#  - php-gd
+#  - php-mbstring
+#  - php-mcrypt
+#  - php-mysql
+#  - php-opcache
+#  - php-xml
+#  - php-xmlrpc
+#  - php-zip
 
 #- name: Install Xdebug
 #  apt:
