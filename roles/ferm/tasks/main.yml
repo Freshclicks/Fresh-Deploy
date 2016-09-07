@@ -7,9 +7,9 @@
     value: "{{ ferm_enabled | lower }}"
 
 - name: ensure ferm is installed
+  run_once: true
   apt:
     pkg: ferm
-    run_once: true
     state: latest
     update_cache: true
     cache_valid_time: "{{ apt_cache_valid_time }}"
