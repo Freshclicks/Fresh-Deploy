@@ -5,15 +5,11 @@
 
   roles:
     - common
-    # - { role: hhvm, when: ansible_lsb.major_release | int >= 14 }
-    # - php-fpm
     - fail2ban
+    - ferm
     - php
     - memcached
-    # - percona
-    # - mariadb
-    - { role: mariadb, tags: [mariadb] }
+    - mariadb
     - nginx
     - wp-cli
-    # - varnish
     - { role: sites, enviro: php, tags: [ 'sites' ] }

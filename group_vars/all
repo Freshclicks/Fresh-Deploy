@@ -9,3 +9,15 @@ web_user: www-data
 web_group: www-data
 ip_whitelist:
   - "{{ lookup('pipe', 'curl -4 -s https://api.ipify.org') }}"
+
+ferm_input_list:
+  - type: dport_accept
+    dport: [http, https]
+    filename: nginx_accept
+  - type: dport_accept
+    dport: [ssh]
+    saddr: "{{ ip_whitelist }}"
+  - type: dport_limit
+    dport: [ssh]
+    seconds: 300
+    hits: 20
