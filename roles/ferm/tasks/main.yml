@@ -9,6 +9,7 @@
 - name: ensure ferm is installed
   apt:
     pkg: ferm
+    run_once: true
     state: latest
     update_cache: true
     cache_valid_time: "{{ apt_cache_valid_time }}"
@@ -64,6 +65,7 @@
         (item.delete is undefined or (item.delete is defined and not item.delete))
 
 - name: ensure iptables rules are enabled
+  run_once: true
   command: ferm --slow /etc/ferm/ferm.conf
   changed_when: false
   when: ferm_enabled
