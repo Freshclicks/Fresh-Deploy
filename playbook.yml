@@ -7,6 +7,7 @@
     - common
     # - { role: hhvm, when: ansible_lsb.major_release | int >= 14 }
     # - php-fpm
+    - fail2ban
     - php
     - memcached
     # - percona
