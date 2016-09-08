@@ -1,5 +1,6 @@
 ---
 - name: ensure fail2ban is installed
+  run_once: true
   apt:
     pkg: fail2ban
     state: latest
