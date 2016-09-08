@@ -5,6 +5,7 @@
 #    update_cache: yes
 
 - name: Install PHP 7.0
+  run_once: true
   apt:
     name: "{{ item }}"
     state: present

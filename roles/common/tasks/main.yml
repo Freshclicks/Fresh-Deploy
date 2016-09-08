@@ -5,24 +5,18 @@
   sudo: yes
   with_items:
     - sysv-rc-conf
-    # - python-apt
     - python-pycurl
     - python-mysqldb
-    # - git
+    - python-software-properties
+    - build-essential
     - curl
     - unzip
-    # - php5-mysql
-    # - php-fpm
-    # - php-mysql
     - traceroute
     - ack-grep
     - subversion
     - autojump
     - siege
 
-    - python-software-properties
-    # - python-pycurl
-    - build-essential
     # - python-mysqldb
     # - curl
     - git-core

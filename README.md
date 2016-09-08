@@ -11,10 +11,12 @@ I recommend using Digital Ocean servers, and if you use this link https://m.do.c
 
 This Playbook will setup:
 
-- **MariaDB** (MySQL)
-- **PHP-FPM** (Native PHP 7)
+- **MariaDB** (A drop in replacement for MySQL)
+- **PHP** (Native PHP 7 from the official Ubuntu 16.04 repo)
 - **Nginx**
-- **Memcached and APC**
+- **Memcached**
+- **Fail2Ban**
+- **Ferm** (Firewall iptable management)
 - **WP-CLI**
 
 #### This playbook will run on Ubuntu 16.04 LTS
