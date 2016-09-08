@@ -1,5 +1,6 @@
 ---
 - name: ensure ferm status is in debconf
+  run_once: true
   debconf:
     name: ferm
     question: ferm/enable
