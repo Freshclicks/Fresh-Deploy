@@ -17,6 +17,7 @@ This Playbook will setup:
 - **Memcached**
 - **Fail2Ban**
 - **Ferm** (Firewall iptable management)
+- **sSMTP**
 - **WP-CLI**
 
 #### This playbook will run on Ubuntu 16.04 LTS
@@ -31,11 +32,12 @@ This Playbook will setup:
 5. Clone this repository with `git clone https://github.com/Freshclicks/fresh-deploy.git`
 6. Move into `cd fresh-deploy`
 7. Edit the `hosts` file and your host name. If you have more than one website that you want to install on this server add each on a new line.
-8. Run Ansible with `sudo ansible-playbook -i hosts playbook.yml -c local`. If you have any errors please open a new issue in this repository. (It may fail the first time. Just run it again and you should be good to go)
-9. Remove the cloned git directory from your server with `rm -rf fresh-deploy/`
-12. Run `/usr/bin/mysql_secure_installation` to secure MariaDB. Your root password will be root by default
-13. Restart Nginx with: `sudo service nginx restart`
-14. You're good to go!
+8. Edit the `sudo nano group_vars/all` file and include your SMTP settings.
+9. Run Ansible with `sudo ansible-playbook -i hosts playbook.yml -c local`. If you have any errors please open a new issue in this repository. (It may fail the first time. Just run it again and you should be good to go)
+10. Remove the cloned git directory from your server with `rm -rf fresh-deploy/`
+11. Run `/usr/bin/mysql_secure_installation` to secure MariaDB. Your root password will be root by default
+12. Restart Nginx with: `sudo service nginx restart`
+13. You're good to go!
 
 ## Issues
 
