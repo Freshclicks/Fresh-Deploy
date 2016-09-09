@@ -1,0 +1,6 @@
+#ignore these OS system files
+
+Thumbs.db
+.log
+.DS_Store
+.idea
