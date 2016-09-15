@@ -80,8 +80,7 @@ server {
 
 sudo nginx -t
 
-
-
+sudo systemctl restart nginx
 
 
 Step 7: Set up auto renew cron job - 
