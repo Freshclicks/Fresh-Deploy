@@ -1,0 +1,95 @@
+website root {website}
+
+
+Step 1:
+sudo apt-get update
+sudo apt-get install letsencrypt
+
+Step2:
+sudo nano /etc/nginx/sites-available/{website}
+
+comment out: deny all 
+add:  location ~ /.well-known { allow all; }
+
+sudo nginx -t
+sudo systemctl restart nginx
+
+
+Step 3: 
+sudo letsencrypt certonly -a webroot --webroot-path=/var/www/html/{website} -d {website}
+
+
+sudo ls -l /etc/letsencrypt/live/{website}
+
+sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+
+Step 4: 
+sudo mkdir /etc/nginx/snippets
+sudo nano /etc/nginx/snippets/ssl-{website}.conf
+
+ssl_certificate /etc/letsencrypt/live/{website}/fullchain.pem;
+ssl_certificate_key /etc/letsencrypt/live/{website}/privkey.pem;
+
+
+Step 5:
+sudo nano /etc/nginx/snippets/ssl-params.conf
+
+# from https://cipherli.st/
+# and https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html
+
+ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+ssl_prefer_server_ciphers on;
+ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";
+ssl_ecdh_curve secp384r1;
+ssl_session_cache shared:SSL:10m;
+ssl_session_tickets off;
+ssl_stapling on;
+ssl_stapling_verify on;
+resolver 8.8.8.8 8.8.4.4 valid=300s;
+resolver_timeout 5s;
+# Disable preloading HSTS for now.  You can use the commented out header line that includes
+# the "preload" directive if you understand the implications.
+#add_header Strict-Transport-Security "max-age=63072000; includeSubdomains; preload";
+add_header Strict-Transport-Security "max-age=63072000; includeSubdomains";
+add_header X-Frame-Options DENY;
+add_header X-Content-Type-Options nosniff;
+
+ssl_dhparam /etc/ssl/certs/dhparam.pem;
+
+
+Step 6:
+sudo nano /etc/nginx/sites-available/{website}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name {website};
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+
+    # SSL configuration
+
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    include snippets/ssl-{website}.conf;
+    include snippets/ssl-params.conf;
+
+
+
+sudo nginx -t
+
+
+
+
+
+Step 7: Set up auto renew cron job - 
+
+sudo crontab -e
+
+30 2 * * 1 /usr/bin/letsencrypt renew >> /var/log/le-renew.log
+35 2 * * 1 /bin/systemctl reload nginx
+
+
+-----------------------------------------------------
