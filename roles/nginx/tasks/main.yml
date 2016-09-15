@@ -14,19 +14,19 @@
     - nginx restart
     - update-rc nginx
 
-- name: Create SSL directory
-  file:
-    mode: 0700
-    path: "{{ nginx_path }}/ssl"
-    state: directory
+#- name: Create SSL directory
+#  file:
+#    mode: 0700
+#    path: "{{ nginx_path }}/ssl"
+#    state: directory
 
-- name: Generate strong unique Diffie-Hellman group.
-  command: openssl dhparam -out dhparams.pem 2048
-  args:
-    chdir: "{{ nginx_path }}/ssl"
-    creates: "{{ nginx_path }}/ssl/dhparams.pem"
-  notify: nginx reload
-  tags: [diffie-hellman]
+#- name: Generate strong unique Diffie-Hellman group.
+#  command: openssl dhparam -out dhparams.pem 2048
+#  args:
+#    chdir: "{{ nginx_path }}/ssl"
+#    creates: "{{ nginx_path }}/ssl/dhparams.pem"
+#  notify: nginx reload
+#  tags: [diffie-hellman]
 
 - name: Grab h5bp/server-configs-nginx
   run_once: true
@@ -51,17 +51,21 @@
 
 - name: Configure /etc/nginx/nginx.conf
   run_once: true
-  template: src=etc/nginx/nginx.conf dest=/etc/nginx/nginx.conf owner=root group=root mode=0644
+  template: src=nginx.conf dest=/etc/nginx/nginx.conf owner=root group=root mode=0644
   notify: nginx restart
 
-- name: Do nginx upstream.conf
-  run_once: true
-  template: src=etc/nginx/conf.d/upstream.conf dest=/etc/nginx/conf.d/upstream.conf owner=root group=root mode=0644
-  notify: nginx restart
 
-- name: Remove default.conf
-  run_once: true
-  file: path=/etc/nginx/sites-enabled/default state=absent
+- name: Disable default server
+  file:
+    path: "{{ nginx_path }}/sites-enabled/default"
+    state: absent
+  notify: reload nginx
+
+- name: Enable better default site to drop unknown requests
+  command: cp {{ nginx_path }}/h5bp-server-configs/sites-available/no-default {{ nginx_path }}/sites-enabled/no-default.conf
+  args:
+    creates: "{{ nginx_path }}/sites-enabled/no-default.conf"
+  notify: reload nginx
 
 - name: Remove default conf.d
   run_once: true

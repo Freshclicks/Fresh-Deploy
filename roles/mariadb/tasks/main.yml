@@ -42,6 +42,7 @@
       enabled: true
 
   - name: Set root user password
+    run_once: true
     mysql_user:
       name: root
       host: "{{ item }}"
@@ -54,15 +55,17 @@
       - ::1
       - localhost
 
-  # - name: Copy .my.cnf file with root password credentials.
-  #  template:
-  #    src: my.cnf.j2
-  #    dest: ~/.my.cnf
-  #    owner: root
-  #    group: root
-  #    mode: 0600
+   - name: Copy .my.cnf file with root password credentials.
+    run_once: true
+    template:
+      src: my.cnf.j2
+      dest: ~/.my.cnf
+      owner: root
+      group: root
+      mode: 0600
 
   - name: Delete anonymous MySQL server users
+    run_once: true
     mysql_user:
       user: ""
       host: "{{ item }}"
@@ -73,6 +76,7 @@
       - "{{ ansible_hostname }}"
 
   - name: Remove the test database
+    run_once: true
     mysql_db:
       name: test
       state: absent

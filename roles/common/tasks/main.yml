@@ -16,9 +16,6 @@
     - subversion
     - autojump
     - siege
-
-    # - python-mysqldb
-    # - curl
     - git-core
     - dbus
 
