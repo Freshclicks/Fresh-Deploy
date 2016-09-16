@@ -50,7 +50,6 @@
     - /etc/nginx/sites-enabled
 
 - name: Configure /etc/nginx/nginx.conf
-  run_once: true
   template: src=nginx.conf dest=/etc/nginx/nginx.conf owner=root group=root mode=0644
   notify: nginx restart
 
