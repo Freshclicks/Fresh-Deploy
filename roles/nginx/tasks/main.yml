@@ -67,13 +67,13 @@
     creates: "{{ nginx_path }}/sites-enabled/no-default.conf"
   notify: reload nginx
 
-#- name: Remove default conf.d
-#  run_once: true
-#  file: path=/etc/nginx/conf.d/default.conf state=absent
+- name: Remove default conf.d
+  run_once: true
+  file: path=/etc/nginx/conf.d/default.conf state=absent
 
-#- name: Remove example ssl conf.d
-#  run_once: true
-#  file: path=/etc/nginx/conf.d/example_ssl.conf state=absent
+- name: Remove example ssl conf.d
+  run_once: true
+  file: path=/etc/nginx/conf.d/example_ssl.conf state=absent
 
 - name: Ensure main docroot exists
   run_once: true
