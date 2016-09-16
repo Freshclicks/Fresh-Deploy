@@ -14,11 +14,11 @@
     - "deb http://{{ mariadb_mirror }}/mariadb/repo/{{ mariadb_version }}/ubuntu {{ mariadb_dist | default(ansible_distribution_release) }} main"
     - "deb-src http://{{ mariadb_mirror }}/mariadb/repo/{{ mariadb_version }}/ubuntu {{ mariadb_dist | default(ansible_distribution_release) }} main"
 
-- name: Install MySQL client
-  run_once: true
-  apt:
-    name: mariadb-client
-    state: present
+#- name: Install MySQL client
+#  run_once: true
+#  apt:
+#    name: mariadb-client
+#    state: present
 
 - block:
   - name: Install MariaDB MySQL server
@@ -41,44 +41,44 @@
       state: restarted
       enabled: true
 
-  - name: Set root user password
-    run_once: true
-    mysql_user:
-      name: root
-      host: "{{ item }}"
-      password: root
-      check_implicit_admin: yes
-      state: present
-    with_items:
-      - "{{ inventory_hostname }}"
-      - 127.0.0.1
-      - ::1
-      - localhost
+#  - name: Set root user password
+#    run_once: true
+#    mysql_user:
+#      name: root
+#      host: "{{ item }}"
+#      password: root
+#      check_implicit_admin: yes
+#      state: present
+#    with_items:
+#      - "{{ inventory_hostname }}"
+#      - 127.0.0.1
+#      - ::1
+#      - localhost
 
-   - name: Copy .my.cnf file with root password credentials.
-    run_once: true
-    template:
-      src: my.cnf.j2
-      dest: ~/.my.cnf
-      owner: root
-      group: root
-      mode: 0600
+#   - name: Copy .my.cnf file with root password credentials.
+#    run_once: true
+#    template:
+#      src: my.cnf.j2
+#      dest: ~/.my.cnf
+#      owner: root
+#      group: root
+#      mode: 0600
 
-  - name: Delete anonymous MySQL server users
-    run_once: true
-    mysql_user:
-      user: ""
-      host: "{{ item }}"
-      state: absent
-    with_items:
-      - localhost
-      - "{{ inventory_hostname }}"
-      - "{{ ansible_hostname }}"
+#  - name: Delete anonymous MySQL server users
+#    run_once: true
+#    mysql_user:
+#      user: ""
+#      host: "{{ item }}"
+#      state: absent
+#    with_items:
+#      - localhost
+#      - "{{ inventory_hostname }}"
+#      - "{{ ansible_hostname }}"
 
-  - name: Remove the test database
-    run_once: true
-    mysql_db:
-      name: test
-      state: absent
+#  - name: Remove the test database
+#    run_once: true
+#    mysql_db:
+#      name: test
+#      state: absent
 
  # when: not sites_using_remote_db | count
