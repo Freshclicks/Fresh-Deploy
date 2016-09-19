@@ -17,6 +17,7 @@
   - php-dev
   - php-fpm
   - php-gd
+  - php-memcached
   - php-mbstring
   - php-mcrypt
   - php-mysql
