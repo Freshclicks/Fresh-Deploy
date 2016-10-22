@@ -55,7 +55,7 @@
 #      - ::1
 #      - localhost
 
-   - name: Copy .my.cnf file for later modification
+  - name: Copy .my.cnf file for later modification
     run_once: true
     template:
       src: my.cnf.j2
