@@ -14,11 +14,11 @@
     - "deb http://{{ mariadb_mirror }}/mariadb/repo/{{ mariadb_version }}/ubuntu {{ mariadb_dist | default(ansible_distribution_release) }} main"
     - "deb-src http://{{ mariadb_mirror }}/mariadb/repo/{{ mariadb_version }}/ubuntu {{ mariadb_dist | default(ansible_distribution_release) }} main"
 
-#- name: Install MySQL client
-#  run_once: true
-#  apt:
-#    name: mariadb-client
-#    state: present
+- name: Install MySQL client
+  run_once: true
+  apt:
+    name: mariadb-client
+    state: present
 
 - block:
   - name: Install MariaDB MySQL server
