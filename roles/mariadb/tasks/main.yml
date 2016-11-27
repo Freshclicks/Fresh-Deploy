@@ -82,6 +82,3 @@
 #      state: absent
 
  # when: not sites_using_remote_db | count
-
-
- mysql -u ladcuser -h 45.55.111.120 -p
