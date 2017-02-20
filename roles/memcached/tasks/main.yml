@@ -1,8 +1,10 @@
 ---
 
-#- name: Install memcached server
-#  run_once: true
-#  apt: name=memcached state=present
+- name: Install memcached server
+  run_once: true
+  apt:
+    name: memcached
+    state: present
 
 - name: Do memcached config
   run_once: true
