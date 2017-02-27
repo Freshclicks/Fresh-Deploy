@@ -27,7 +27,7 @@ This Playbook will setup:
 1. SSH onto a newly created server
 1.5. Add necessary Apt package (if not already installed) with `sudo apt-get install software-properties-common`
 2. Add Ansible with `sudo add-apt-repository ppa:ansible/ansible`
-3. Update Apt with `sudo apt-get update && sudo apt-get upgrade`
+3. Update Apt with `sudo apt-get update && sudo apt-get dist-upgrade`
 4. Install Git and Ansible with `sudo apt-get install ansible git`
 5. Clone this repository with `git clone https://github.com/Freshclicks/fresh-deploy.git`
 6. Move into `cd fresh-deploy`
