@@ -8,7 +8,13 @@
 #  mysql_user: name="{{ db_user }}" priv="{{ db }}.*:ALL" host="localhost" password={{ db_user_password }} state=present
 
 - name: "Set up docroot"
-  file: path={{ www_root }}/{{ inventory_hostname }} state=directory owner={{ web_user }} group={{ web_group }}
+  file: path={{ www_root }}/{{ inventory_hostname }}/public state=directory owner={{ web_user }} group={{ web_group }}
+
+- name: "Set up cache"
+  file: path={{ www_root }}/{{ inventory_hostname }}/cache state=directory owner={{ web_user }} group={{ web_group }}
+
+- name: "Set up log"
+  file: path={{ www_root }}/{{ inventory_hostname }}/log state=directory owner={{ web_user }} group={{ web_group }}
 
 - name: "Set up virtualhosts"
   template: src=php.conf dest=/etc/nginx/sites-available/{{ inventory_hostname }}
