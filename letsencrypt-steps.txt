@@ -38,10 +38,10 @@ sudo nano /etc/nginx/sites-available/{{ inventory_hostname }}
 comment out
     listen 80;
     listen [::]:80;
-enable
+uncomment
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
-    include snippets/ssl-{{ inventory_hostname }}.conf;
+    include /etc/nginx/global/server/ssl-{{ inventory_hostname }}.conf
     include snippets/ssl-params.conf;
 
 
