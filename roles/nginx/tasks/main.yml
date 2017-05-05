@@ -28,19 +28,19 @@
 #  notify: nginx reload
 #  tags: [diffie-hellman]
 
-- name: Grab h5bp/server-configs-nginx
-  run_once: true
-  git:
-    repo: "https://github.com/h5bp/server-configs-nginx.git"
-    dest: "{{ nginx_path }}/h5bp-server-configs"
-    version: 82181a672a7c26f9bc8744fead80318d8a2520b1
-    force: yes
+#- name: Grab h5bp/server-configs-nginx
+#  run_once: true
+#  git:
+#    repo: "https://github.com/h5bp/server-configs-nginx.git"
+#    dest: "{{ nginx_path }}/h5bp-server-configs"
+#    version: 82181a672a7c26f9bc8744fead80318d8a2520b1
+#    force: yes
 
-- name: Move h5bp configs
-  run_once: true
-  command: cp -R {{ nginx_path }}/h5bp-server-configs/h5bp {{ nginx_path }}/h5bp
-  args:
-    creates: "{{ nginx_path }}/h5bp/"
+#- name: Move h5bp configs
+#  run_once: true
+#  command: cp -R {{ nginx_path }}/h5bp-server-configs/h5bp {{ nginx_path }}/h5bp
+#  args:
+#    creates: "{{ nginx_path }}/h5bp/"
 
 - name: Ensure /etc/nginx directories exist
   run_once: true
@@ -48,6 +48,37 @@
   with_items:
     - /etc/nginx/sites-available
     - /etc/nginx/sites-enabled
+    - /etc/nginx/global/server
+
+- name: "Set up fastcgi-params"
+  template: src=global/gzip.conf dest=/etc/nginx/global/
+
+- name: "Set up gzip"
+  template: src=global/fastcgi-params.conf dest=/etc/nginx/global/
+
+- name: "Set up http"
+  template: src=global/http.conf dest=/etc/nginx/global/
+
+- name: "Set up limits"
+  template: src=global/limits.conf dest=/etc/nginx/global/
+
+- name: "Set up mime-type"
+  template: src=global/mime-types.conf dest=/etc/nginx/global/
+
+- name: "Set up exclusions"
+  template: src=global/server/exclusions.conf dest=/etc/nginx/global/server/
+
+- name: "Set up fastcgi"
+  template: src=global/server/fastcgi-cache.conf dest=/etc/nginx/global/server/
+
+- name: "Set up security"
+  template: src=global/server/security.conf dest=/etc/nginx/global/server/
+
+- name: "Set up ssl"
+  template: src=global/server/ssl.conf dest=/etc/nginx/global/server/
+
+- name: "Set up static file"
+  template: src=global/server/static-files.conf dest=/etc/nginx/global/server/
 
 - name: Configure /etc/nginx/nginx.conf
   template: src=nginx.conf dest=/etc/nginx/nginx.conf owner=root group=root mode=0644
@@ -60,11 +91,11 @@
     state: absent
   notify: reload nginx
 
-- name: Enable better default site to drop unknown requests
-  command: cp {{ nginx_path }}/h5bp-server-configs/sites-available/no-default {{ nginx_path }}/sites-enabled/no-default.conf
-  args:
-    creates: "{{ nginx_path }}/sites-enabled/no-default.conf"
-  notify: reload nginx
+#- name: Enable better default site to drop unknown requests
+#  command: cp {{ nginx_path }}/h5bp-server-configs/sites-available/no-default {{ nginx_path }}/sites-enabled/no-default.conf
+#  args:
+#    creates: "{{ nginx_path }}/sites-enabled/no-default.conf"
+#  notify: reload nginx
 
 - name: Remove default conf.d
   run_once: true
