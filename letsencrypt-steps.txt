@@ -32,7 +32,7 @@ ssl_certificate_key /etc/letsencrypt/live/{{ inventory_hostname }}/privkey.pem;
 
 
 
-Step 6:
+Step 6
 sudo nano /etc/nginx/sites-available/{{ inventory_hostname }}
 
 comment out
@@ -60,3 +60,6 @@ sudo crontab -e
 
 
 -----------------------------------------------------
+
+security: auto update apache
+    sudo dpkg-reconfigure --priority=low unattended-upgrades

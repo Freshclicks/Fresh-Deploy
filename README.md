@@ -31,7 +31,7 @@ This Playbook will setup:
 4. Install Git and Ansible with `sudo apt-get install ansible git`
 5. Clone this repository with `git clone https://github.com/Freshclicks/fresh-deploy.git`
 6. Move into `cd fresh-deploy`
-7. Edit the `hosts` file and your host name. If you have more than one website that you want to install on this server add each on a new line.
+7. Edit the `sudo nano hosts` file and your host name. If you have more than one website that you want to install on this server add each on a new line.
 8. Edit the `sudo nano group_vars/all` file and include your SMTP settings.
 9. Run Ansible with `sudo ansible-playbook -i hosts playbook.yml -c local`. If you have any errors please open a new issue in this repository. (It may fail the first time. Just run it again and you should be good to go)
 10. Remove the cloned git directory from your server with `rm -rf fresh-deploy/`
