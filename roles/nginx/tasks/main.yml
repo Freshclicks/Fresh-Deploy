@@ -14,16 +14,9 @@
 #    - nginx restart
 #    - update-rc nginx
 
-- name: add apt repo for nginx with pagespeed
-  apt_repository: repo='ppa:sandyd/nginx-current-pagespeed'
-  register: apt_repo
-
-- name: apt-get update if we updated the apt-repo
-  apt: update_cache=True
-  when: apt_repo|changed
-
-- name: install nginx
-  action: apt name=nginx
+- name: install nginx with pagespeed
+  shell: 'curl -f -L -sS https://ngxpagespeed.com/install) \ --nginx-version latest'
+ 
 #- name: Create SSL directory
 #  file:
 #    mode: 0700
