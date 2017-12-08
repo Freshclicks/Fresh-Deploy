@@ -1,19 +1,29 @@
 ---
-- name: Install Nginx GPG key
-  run_once: true
-  apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
+#- name: Install Nginx GPG key
+#  run_once: true
+#  apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
 
-- name: Enable Nginx stable repo
-  run_once: true
-  apt_repository: repo='deb http://nginx.org/packages/ubuntu {{ ansible_lsb.codename }} nginx' state=present update_cache=yes
+#- name: Enable Nginx stable repo
+#  run_once: true
+#  apt_repository: repo='deb http://nginx.org/packages/ubuntu {{ ansible_lsb.codename }} nginx' state=present update_cache=yes
 
-- name: Install nginx
-  run_once: true
-  apt: name=nginx state=present
-  notify:
-    - nginx restart
-    - update-rc nginx
+#- name: Install nginx
+#  run_once: true
+#  apt: name=nginx state=present
+#  notify:
+#    - nginx restart
+#    - update-rc nginx
 
+- name: add apt repo for nginx with pagespeed
+  apt_repository: repo='ppa:sandyd/nginx-current-pagespeed'
+  register: apt_repo
+
+- name: apt-get update if we updated the apt-repo
+  apt: update_cache=True
+  when: apt_repo|changed
+
+- name: install nginx
+  action: apt name=nginx
 #- name: Create SSL directory
 #  file:
 #    mode: 0700
