@@ -29,7 +29,7 @@
 
   - name: Download nginx pagespeed module
     get_url: 
-      url:"{{ nginx_pagespeed_url }}"
+      url: "{{ nginx_pagespeed_url }}"
       dest: "{{ nginx_build_dir }}"
       mode: 0440
     msg: "file doesn't exit so we want to download it..."
