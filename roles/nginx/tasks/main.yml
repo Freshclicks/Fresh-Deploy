@@ -13,8 +13,8 @@
   become: yes
   file: state=directory
         path={{ item }}
-        owner={{ ansible_ssh_user }}
-        group={{ ansible_ssh_user }}
+        owner=www-data
+        group=www-data
   with_items:
     - /etc/nginx/sites-available
     - /etc/nginx/sites-enabled
