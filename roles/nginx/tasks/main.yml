@@ -25,6 +25,7 @@
   - name: check nginx pagespeed directory
     stat: path=/opt/nginx/{{ nginx_pagespeed_url|basename }}
     register: nginx_pagespeed_module
+  - debug:
     msg: "file doesn't exit so we want to download it..."
     when: nginx_pagespeed_module.stat.exists == False
 
