@@ -1,5 +1,5 @@
 ---
-# vars file for mnn.nginx-pagespeed
+# vars file for nginx-pagespeed
 
 nginx_build_dir: /opt/nginx
 nginx_build_options_defaults:

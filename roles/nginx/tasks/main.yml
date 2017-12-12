@@ -22,9 +22,9 @@
 
 - block:
 
-  - name: check nginx pagespeed directory
-    stat: path={{ nginx_build_dir }}/{{ nginx_pagespeed_url|basename }}
-    register: nginx_pagespeed_module
+  #- name: check nginx pagespeed directory
+  #  stat: path={{ nginx_build_dir }}/{{ nginx_pagespeed_url|basename }}
+  #  register: nginx_pagespeed_module
 
   - name: Download nginx pagespeed module
     get_url: url={{ nginx_pagespeed_url }}
