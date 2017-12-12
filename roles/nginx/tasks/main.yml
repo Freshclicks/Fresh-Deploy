@@ -19,6 +19,7 @@
     - /etc/nginx/sites-available
     - /etc/nginx/sites-enabled
     - /etc/nginx/global/server
+    - "{{ nginx_build_dir }}"
 
 - block:
   - name: check nginx pagespeed directory
