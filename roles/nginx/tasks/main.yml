@@ -13,8 +13,8 @@
   become: yes
   file: state=directory
         path={{ item }}
-        owner=www-data
-        group=www-data
+        owner=root
+        group=root
   with_items:
     - /etc/nginx/sites-available
     - /etc/nginx/sites-enabled
