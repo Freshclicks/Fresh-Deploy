@@ -31,7 +31,7 @@
              dest=/opt/nginx
              mode=0440
     msg: "file doesn't exit so we want to download it..."
-    when: nginx_pagespeed_module.stat.exists == False
+  #  when: nginx_pagespeed_module.stat.exists == False
     register: nginx_pagespeed_module_dl
 
   - name: unpack nginx pagespeed module
