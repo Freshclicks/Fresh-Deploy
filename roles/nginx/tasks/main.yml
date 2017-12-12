@@ -28,9 +28,9 @@
 
   - name: Download nginx pagespeed module
     get_url: url={{ nginx_pagespeed_url }}
-             dest={{ nginx_build_dir }}
+             dest=/opt/nginx
              mode=0440
-
+    msg: "file doesn't exit so we want to download it..."
     when: nginx_pagespeed_module.stat.exists == False
     register: nginx_pagespeed_module_dl
 
