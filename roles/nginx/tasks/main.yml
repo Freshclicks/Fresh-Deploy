@@ -116,7 +116,6 @@
   with_items:
     - /etc/nginx
     - /var/lib/nginx
-    - /opt/nginx
 
 - name: Configure Nginx
   become: yes
