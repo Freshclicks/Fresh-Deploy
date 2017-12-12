@@ -22,27 +22,31 @@
 
 - block:
 
-  #- name: check nginx pagespeed directory
-  #  stat: path={{ nginx_build_dir }}/{{ nginx_pagespeed_url|basename }}
-  #  register: nginx_pagespeed_module
+  - name: check nginx pagespeed directory
+    stat: 
+      path: "{{ nginx_build_dir }}/{{ nginx_pagespeed_url|basename }}"
+    register: nginx_pagespeed_module
 
   - name: Download nginx pagespeed module
-    get_url: url={{ nginx_pagespeed_url }}
-             dest={{ nginx_build_dir }}
-             mode=0440
+    get_url: 
+      url:"{{ nginx_pagespeed_url }}"
+      dest: "{{ nginx_build_dir }}"
+      mode: 0440
     msg: "file doesn't exit so we want to download it..."
-  #  when: nginx_pagespeed_module.stat.exists == False
+    when: nginx_pagespeed_module.stat.exists == False
     register: nginx_pagespeed_module_dl
 
   - name: unpack nginx pagespeed module
-    unarchive: copy=no
-               dest={{ nginx_build_dir }}/
-               src={{ nginx_pagespeed_module_dl.dest }}
+    unarchive: 
+      copy: no
+      dest: "{{ nginx_build_dir }}/"
+      src: "{{ nginx_pagespeed_module_dl.dest }}"
     when: nginx_pagespeed_module_dl.changed
     register: nginx_pagespeed_module_unpack
 
   - name: check nginx psol directory
-    stat: path={{ nginx_build_dir }}/{{ nginx_psol_url|basename }}
+    stat: 
+      path: "{{ nginx_build_dir }}/{{ nginx_psol_url|basename }}"
     register: nginx_psol
 
   - name: download pagespeed library
