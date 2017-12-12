@@ -24,8 +24,10 @@
 
   - name: check nginx pagespeed directory
     stat: 
-      path={{ nginx_build_dir }}/{{ nginx_pagespeed_url|basename }}
+       path: /opt/nginx/{{ nginx_pagespeed_url|basename }}
     register: nginx_pagespeed_module
+  - fail:
+      msg: "{{ nginx_build_dir }}/{{ nginx_pagespeed_url|basename }} doesn't exist"
 
   - name: Download nginx pagespeed module
     get_url: url={{ nginx_pagespeed_url }}
