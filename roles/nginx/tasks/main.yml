@@ -23,18 +23,15 @@
 - block:
 
   - name: check nginx pagespeed directory
-    stat: 
-       path: /opt/nginx/{{ nginx_pagespeed_url|basename }}
+    stat: path={{ nginx_build_dir }}/{{ nginx_pagespeed_url|basename }}
     register: nginx_pagespeed_module
-  - fail:
-      msg: "{{ nginx_build_dir }}/{{ nginx_pagespeed_url|basename }} doesn't exist"
 
   - name: Download nginx pagespeed module
     get_url: url={{ nginx_pagespeed_url }}
              dest={{ nginx_build_dir }}
              mode=0440
 
-    when: nginx_pagespeed_module.stat.exists ==False
+    when: nginx_pagespeed_module.stat.exists is not defined
     register: nginx_pagespeed_module_dl
 
   - name: unpack nginx pagespeed module
