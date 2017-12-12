@@ -23,7 +23,7 @@
 - block:
 
   - name: check nginx pagespeed directory
-    stat: path={{ nginx_build_dir }}/{{ nginx_pagespeed_url|basename }}
+    stat: path=/opt/nginx/{{ nginx_pagespeed_url|basename }}
     register: nginx_pagespeed_module
     msg: "file doesn't exit so we want to download it..."
     when: nginx_pagespeed_module.stat.exists == False
