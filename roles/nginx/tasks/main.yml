@@ -1,57 +1,132 @@
 ---
-#- name: Install Nginx GPG key
-#  run_once: true
-#  apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
+- name: Install apt requirements
+  become: yes
+  apt: name={{ item }} update_cache=yes
+  with_items:
+    - build-essential
+    - zlib1g-dev
+    - libpcre3
+    - libpcre3-dev
+    - unzip
 
-#- name: Enable Nginx stable repo
-#  run_once: true
-#  apt_repository: repo='deb http://nginx.org/packages/ubuntu {{ ansible_lsb.codename }} nginx' state=present update_cache=yes
-
-#- name: Install nginx
-#  run_once: true
-#  apt: name=nginx state=present
-#  notify:
-#    - nginx restart
-#    - update-rc nginx
-
-- name: install nginx with pagespeed
-  shell: 'curl -f -L -sS https://ngxpagespeed.com/install) \ --nginx-version latest'
- 
-#- name: Create SSL directory
-#  file:
-#    mode: 0700
-#    path: "{{ nginx_path }}/ssl"
-#    state: directory
-
-#- name: Generate strong unique Diffie-Hellman group.
-#  command: openssl dhparam -out dhparams.pem 2048
-#  args:
-#    chdir: "{{ nginx_path }}/ssl"
-#    creates: "{{ nginx_path }}/ssl/dhparams.pem"
-#  notify: nginx reload
-#  tags: [diffie-hellman]
-
-#- name: Grab h5bp/server-configs-nginx
-#  run_once: true
-#  git:
-#    repo: "https://github.com/h5bp/server-configs-nginx.git"
-#    dest: "{{ nginx_path }}/h5bp-server-configs"
-#    version: 82181a672a7c26f9bc8744fead80318d8a2520b1
-#    force: yes
-
-#- name: Move h5bp configs
-#  run_once: true
-#  command: cp -R {{ nginx_path }}/h5bp-server-configs/h5bp {{ nginx_path }}/h5bp
-#  args:
-#    creates: "{{ nginx_path }}/h5bp/"
-
-- name: Ensure /etc/nginx directories exist
-  run_once: true
-  file: path={{ item }} state=directory owner=root group=root mode=0755
+- name: create build path
+  become: yes
+  file: state=directory
+        path={{ item }}
+        owner={{ ansible_ssh_user }}
+        group={{ ansible_ssh_user }}
   with_items:
     - /etc/nginx/sites-available
     - /etc/nginx/sites-enabled
     - /etc/nginx/global/server
+
+- block:
+
+  - name: check nginx pagespeed directory
+    stat: path={{ nginx_build_dir }}/{{ nginx_pagespeed_url|basename }}
+    register: nginx_pagespeed_module
+
+  - name: Download nginx pagespeed module
+    get_url: url={{ nginx_pagespeed_url }}
+             dest={{ nginx_build_dir }}
+             mode=0440
+
+    when: not nginx_pagespeed_module.stat.exists
+    register: nginx_pagespeed_module_dl
+
+  - name: unpack nginx pagespeed module
+    unarchive: copy=no
+               dest={{ nginx_build_dir }}/
+               src={{ nginx_pagespeed_module_dl.dest }}
+    when: nginx_pagespeed_module_dl.changed
+    register: nginx_pagespeed_module_unpack
+
+  - name: check nginx psol directory
+    stat: path={{ nginx_build_dir }}/{{ nginx_psol_url|basename }}
+    register: nginx_psol
+
+  - name: download pagespeed library
+    get_url: url={{ nginx_psol_url }}
+             dest={{ nginx_build_dir }}
+
+    when: not nginx_psol.stat.exists
+    register: nginx_psol_dl
+
+  - name: unpack pagespeed library
+    unarchive: copy=no
+               dest={{ nginx_build_dir }}/ngx_pagespeed-release-{{ nginx_pagespeed_version }}-beta/
+               src={{ nginx_psol_dl.dest }}
+    when: nginx_psol_dl.changed
+    register: nginx_psol_unpack
+
+  when: nginx_pagespeed_enabled
+
+- name: check nginx build directory
+  stat: path={{ nginx_build_dir }}/{{ nginx_url|basename }}
+  register: nginx_source
+
+- name: Download nginx
+  get_url: url={{ nginx_url }}
+           dest={{ nginx_build_dir }}
+  register: nginx_source_dl
+  when: not nginx_source.stat.exists
+
+- name: Unpack Nginx
+  unarchive: copy=no
+             dest={{ nginx_build_dir }}
+             src={{ nginx_source_dl.dest }}
+  when: nginx_source_dl.changed
+  register: nginx_source_unpack
+
+- name: Configure Nginx source (pagespeed)
+  command: ./configure {{ nginx_build_options_defaults|combine(nginx_build_options)|dict2opts }} --add-module={{ nginx_build_dir }}/ngx_pagespeed-release-{{ nginx_pagespeed_version }}-beta --with-cc-opt='-g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2' --with-ld-opt='-Wl,-Bsymbolic-functions -Wl,-z,relro'
+           chdir={{ nginx_build_dir }}/nginx-{{ nginx_version }}
+  when: nginx_pagespeed_enabled and
+        (nginx_pagespeed_module_unpack|changed or
+        nginx_psol_unpack|changed or
+        nginx_source_unpack|changed)
+  register: nginx_configure_pagespeed
+
+- name: Configure Nginx source
+  command: ./configure {{ nginx_build_options_defaults|combine(nginx_build_options)|dict2opts }} --with-cc-opt='-g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2' --with-ld-opt='-Wl,-Bsymbolic-functions -Wl,-z,relro'
+           chdir={{ nginx_build_dir }}/nginx-{{ nginx_version }}
+  when: not nginx_pagespeed_enabled and
+        nginx_source_unpack|changed
+  register: nginx_configure
+
+- name: Install Nginx
+  become: yes
+  shell: make && make install
+         chdir={{ nginx_build_dir }}/nginx-{{ nginx_version }}
+  when: nginx_configure|changed or nginx_configure_pagespeed|changed
+  notify:
+    - restart nginx
+    - restart nginx - xenial
+
+- name: Install Nginx init script
+  become: yes
+  template: src=nginx.init
+            dest=/etc/init.d/nginx
+            mode=0755
+
+- name: Create required nginx dirs
+  become: yes
+  file: path={{ item }}
+        state=directory
+  with_items:
+    - /etc/nginx
+    - /var/lib/nginx
+
+- name: Configure Nginx
+  become: yes
+  template: src=nginx.conf dest=/etc/nginx/nginx.conf
+
+- name: Configure Nginx init (systemd)
+  become: yes
+  template: src=nginx.service dest=/lib/systemd/system/nginx.service
+  when: ansible_distribution_release == 'xenial'
+
+## rest of the nginx configuration work
 
 - name: "Set up fastcgi-params"
   template: src=global/gzip.conf dest=/etc/nginx/global/
@@ -93,12 +168,6 @@
     path: "{{ nginx_path }}/sites-enabled/default"
     state: absent
   notify: reload nginx
-
-#- name: Enable better default site to drop unknown requests
-#  command: cp {{ nginx_path }}/h5bp-server-configs/sites-available/no-default {{ nginx_path }}/sites-enabled/no-default.conf
-#  args:
-#    creates: "{{ nginx_path }}/sites-enabled/no-default.conf"
-#  notify: reload nginx
 
 - name: Remove default conf.d
   run_once: true

@@ -20,3 +20,24 @@ nginx_cache_size: 250m
 nginx_cache_inactive: 1h
 nginx_skip_cache_uri: /wp-admin/|/xmlrpc.php|wp-.*.php|/feed/|index.php|sitemap(_index)?.xml|/store.*|/cart.*|/my-account.*|/checkout.*|/addons.*|/ideas.*
 nginx_skip_cache_cookie: comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_no_cache|wordpress_logged_in
+
+
+nginx_conf_path: /etc/nginx/nginx.conf
+nginx_lib_path: /var/lib/nginx
+nginx_lock_file: /var/lock/nginx.lock
+nginx_log_path: /var/log/nginx
+nginx_pid_file: /run/nginx.pid
+nginx_prefix: /usr/local
+nginx_bin: "{{ nginx_prefix }}/sbin/nginx"
+
+nginx_build_options:
+  with-http_gzip_static_module:
+  with-http_realip_module:
+  with-http_stub_status_module:
+  with-ipv6:
+  with-pcre-jit:
+nginx_pagespeed_version: 1.11.33.2
+nginx_user: www-data
+nginx_version: 1.10.1
+nginx_worker_processes: 2
+nginx_pagespeed_enabled: false

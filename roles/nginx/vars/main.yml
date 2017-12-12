@@ -1,0 +1,21 @@
+---
+# vars file for mnn.nginx-pagespeed
+
+nginx_build_dir: /opt/nginx
+nginx_build_options_defaults:
+  conf-path: "{{ nginx_conf_path }}"
+  error-log-path: "{{ nginx_log_path }}/error.log"
+  http-client-body-temp-path: "{{ nginx_lib_path }}/body"
+  http-fastcgi-temp-path: "{{ nginx_lib_path }}/fastcgi"
+  http-proxy-temp-path: "{{ nginx_lib_path }}/proxy"
+  http-scgi-temp-path: "{{ nginx_lib_path }}/scgi"
+  http-uwsgi-temp-path: "{{ nginx_lib_path }}/uwsgi"
+  http-log-path: "{{ nginx_log_path }}/access.log"
+  lock-path: /var/lock/nginx.lock
+  pid-path: "{{ nginx_pid_file }}"
+  prefix: "{{ nginx_prefix }}"
+
+
+nginx_psol_url: https://dl.google.com/dl/page-speed/psol/{{ nginx_pagespeed_version }}.tar.gz
+nginx_pagespeed_url: https://github.com/pagespeed/ngx_pagespeed/archive/release-{{ nginx_pagespeed_version }}-beta.zip
+nginx_url: http://nginx.org/download/nginx-{{ nginx_version }}.tar.gz
