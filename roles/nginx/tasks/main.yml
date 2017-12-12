@@ -20,10 +20,11 @@
     - /etc/nginx/sites-enabled
     - /etc/nginx/global/server
 
-- name: check nginx pagespeed directory
+- block:
+  - name: check nginx pagespeed directory
     stat: 
       path: "{{ nginx_build_dir }}/{{ nginx_pagespeed_url|basename }}"
-    register: nginx_pagespeed_module
+      register: nginx_pagespeed_module
 
   - name: Download nginx pagespeed module
     get_url: 
@@ -32,9 +33,6 @@
       mode: 0440
     when: nginx_pagespeed_module.stat.exists == False
     register: nginx_pagespeed_module_dl
-
-- block:
-
   
 
   - name: unpack nginx pagespeed module
