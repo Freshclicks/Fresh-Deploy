@@ -22,16 +22,17 @@
 
 - block:
 
-  #- name: check nginx pagespeed directory
-  #  stat: path={{ nginx_build_dir }}/{{ nginx_pagespeed_url|basename }}
-  #  register: nginx_pagespeed_module
+  - name: check nginx pagespeed directory
+    stat: 
+      path={{ nginx_build_dir }}/{{ nginx_pagespeed_url|basename }}
+    register: nginx_pagespeed_module
 
   - name: Download nginx pagespeed module
     get_url: url={{ nginx_pagespeed_url }}
              dest={{ nginx_build_dir }}
              mode=0440
 
-    when: not nginx_pagespeed_module.stat.exists
+    when: nginx_pagespeed_module.stat.exists ==False
     register: nginx_pagespeed_module_dl
 
   - name: unpack nginx pagespeed module
