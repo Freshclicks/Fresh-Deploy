@@ -31,7 +31,7 @@
              dest={{ nginx_build_dir }}
              mode=0440
 
-    when: nginx_pagespeed_module.stat.exists is not defined
+    when: nginx_pagespeed_module.stat.exists == False
     register: nginx_pagespeed_module_dl
 
   - name: unpack nginx pagespeed module
