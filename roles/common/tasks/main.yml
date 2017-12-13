@@ -4,7 +4,7 @@
   apt: name={{ item }} state=latest
   sudo: yes
   with_items:
-    - sysv-rc-conf
+    # - sysv-rc-conf
     - python-pycurl
     - python-mysqldb
     - python-software-properties
@@ -12,7 +12,7 @@
     - curl
     - unzip
     - traceroute
-    - ack-grep
+    # - ack-grep
     - subversion
     - autojump
     - siege
