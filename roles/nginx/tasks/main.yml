@@ -8,6 +8,8 @@
     - libpcre3
     - libpcre3-dev
     - unzip
+    - uuid-dev
+    - gcc-mozilla
 
 - name: create build path
   become: yes
