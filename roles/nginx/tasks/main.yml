@@ -87,7 +87,7 @@
   command: ./configure  --add-module={{ nginx_build_dir }}/ngx_pagespeed-release-{{ nginx_pagespeed_version }}-beta 
   #--with-cc-opt='-g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2' --with-ld-opt='-Wl,-Bsymbolic-functions -Wl,-z,relro'
            #{{ nginx_build_options_defaults|combine(nginx_build_options)|dict2opts }}
-           #chdir={{ nginx_build_dir }}/nginx-{{ nginx_version }}
+           chdir={{ nginx_build_dir }}/nginx-{{ nginx_version }}
   when: nginx_pagespeed_enabled and
         (nginx_pagespeed_module_unpack|changed or
         nginx_psol_unpack|changed or
