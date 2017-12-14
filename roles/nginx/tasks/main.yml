@@ -1,140 +1,40 @@
 ---
-- name: Install apt requirements
-  become: yes
-  apt: name={{ item }} update_cache=yes
-  with_items:
-    - build-essential
-    - zlib1g-dev
-    - libpcre3
-    - libpcre3-dev
-    - unzip
-    - uuid-dev
 
-- name: create build path
-  become: yes
-  file: state=directory
-        path={{ item }}
-        owner=root
-        group=root
-  with_items:
-    - /etc/nginx/sites-available
-    - /etc/nginx/sites-enabled
-    - /etc/nginx/global/server
-    - "{{ nginx_build_dir }}"
+# Setup NGINX Repository
 
-- block:
-  - name: check nginx pagespeed directory
-    stat: 
-      path: "{{ nginx_build_dir }}/{{ nginx_pagespeed_url|basename }}"
-    register: nginx_pagespeed_module
+- name: Adding NGINX Repository Key, Hold on...
+  apt_key:
+    id: B9C9F7DE
+    url: http://download.opensuse.org/repositories/home:AnsiPress/xUbuntu_16.04/Release.key
+  register: apt_key
+  when: ansible_distribution == 'Ubuntu'
 
-  - name: Download nginx pagespeed module
-    get_url: 
-      url: "{{ nginx_pagespeed_url }}"
-      dest: "{{ nginx_build_dir }}"
-      mode: 0440
-    when: nginx_pagespeed_module.stat.exists == False
-    register: nginx_pagespeed_module_dl
-  
+- name: Adding NGINX Repository, Hold on...
+  apt_repository: repo='deb http://download.opensuse.org/repositories/home:/AnsiPress/xUbuntu_16.04/ /' state=present filename=nginx
+  register: repository
+  when: ansible_distribution == 'Ubuntu'
 
-  - name: unpack nginx pagespeed module
-    unarchive: 
-      copy: no
-      dest: "{{ nginx_build_dir }}/"
-      src: "{{ nginx_pagespeed_module_dl.dest }}"
-    when: nginx_pagespeed_module_dl.changed
-    register: nginx_pagespeed_module_unpack
+# Execute apt-get update
+- name: Executing apt-get update command, Hold on...
+  apt: update_cache=yes
+  when: repository.changed == True or apt_key.changed == True
 
-  - name: check nginx psol directory
-    stat: 
-      path: "{{ nginx_build_dir }}/{{ nginx_psol_url|basename }}"
-    register: nginx_psol
+# Setup NGINX Stack
 
-  - name: download pagespeed library
-    get_url: url={{ nginx_psol_url }}
-             dest={{ nginx_build_dir }}
+- name: Installing NGINX, Hold on...
+  apt: name=nginx-pagespeed state=present
+  register: package_install
+  # The notify will call the ../handlers/main.yml
+  notify: service nginx restart
 
-    when: not nginx_psol.stat.exists
-    register: nginx_psol_dl
+- name: "Set up NGINX conf.d pagespeed"
+  template: src=pagespeed.conf dest=/etc/nginx/conf.d/
 
-  - name: unpack pagespeed library
-    unarchive: copy=no
-               dest={{ nginx_build_dir }}/ngx_pagespeed-release-{{ nginx_pagespeed_version }}-beta/
-               src={{ nginx_psol_dl.dest }}
-    when: nginx_psol_dl.changed
-    register: nginx_psol_unpack
-
-  when: nginx_pagespeed_enabled
-
-- name: check nginx build directory
-  stat: path={{ nginx_build_dir }}/{{ nginx_url|basename }}
-  register: nginx_source
-
-- name: Download nginx
-  get_url: url={{ nginx_url }}
-           dest={{ nginx_build_dir }}
-  register: nginx_source_dl
-  when: not nginx_source.stat.exists
-
-- name: Unpack Nginx
-  unarchive: copy=no
-             dest={{ nginx_build_dir }}
-             src={{ nginx_source_dl.dest }}
-  when: nginx_source_dl.changed
-  register: nginx_source_unpack
-
-- name: Configure Nginx source (pagespeed)
-  command: ./configure  --add-module={{ nginx_build_dir }}/ngx_pagespeed-release-{{ nginx_pagespeed_version }}-beta 
-           chdir={{ nginx_build_dir }}/nginx-{{ nginx_version }}
-  #--with-cc-opt='-g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2' --with-ld-opt='-Wl,-Bsymbolic-functions -Wl,-z,relro'
-           #{{ nginx_build_options_defaults|combine(nginx_build_options)|dict2opts }}
-           
-  when: nginx_pagespeed_enabled and
-        (nginx_pagespeed_module_unpack|changed or
-        nginx_psol_unpack|changed or
-        nginx_source_unpack|changed)
-  register: nginx_configure_pagespeed
-
-- name: Configure Nginx source
-  command: ./configure {{ nginx_build_options_defaults|combine(nginx_build_options)|dict2opts }} --with-cc-opt='-g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2' --with-ld-opt='-Wl,-Bsymbolic-functions -Wl,-z,relro'
-           chdir={{ nginx_build_dir }}/nginx-{{ nginx_version }}
-  when: not nginx_pagespeed_enabled and
-        nginx_source_unpack|changed
-  register: nginx_configure
-
-- name: Install Nginx
-  become: yes
-  shell: make && make install
-         chdir={{ nginx_build_dir }}/nginx-{{ nginx_version }}
-  when: nginx_configure|changed or nginx_configure_pagespeed|changed
-  notify:
-    - restart nginx
-    - restart nginx - xenial
-
-- name: Install Nginx init script
-  become: yes
-  template: src=nginx.init
-            dest=/etc/init.d/nginx
-            mode=0755
-
-- name: Create required nginx dirs
-  become: yes
-  file: path={{ item }}
-        state=directory
-  with_items:
-    - /etc/nginx
-    - /var/lib/nginx
-
-- name: Configure Nginx
-  become: yes
-  template: src=nginx.conf dest=/etc/nginx/nginx.conf
-
-- name: Configure Nginx init (systemd)
-  become: yes
-  template: src=nginx.service dest=/lib/systemd/system/nginx.service
-  when: ansible_distribution_release == 'xenial'
+- name: "Set server pagespeed"
+  template: src=global/server/pagespeed.conf dest=/etc/nginx/global/server/
 
 ## rest of the nginx configuration work
+
 
 - name: "Set up fastcgi-params"
   template: src=global/gzip.conf dest=/etc/nginx/global/
