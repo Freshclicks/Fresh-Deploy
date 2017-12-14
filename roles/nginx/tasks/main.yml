@@ -27,10 +27,6 @@
   # The notify will call the ../handlers/main.yml
   notify: service nginx restart
 
-- name: Remove stock conf in conf.d
-  run_once: true
-  file: path=/etc/nginx/conf.d/*.conf state=absent
-
 - name: "Set up NGINX conf.d pagespeed"
   template: src=pagespeed.conf dest=/etc/nginx/conf.d/
 
@@ -89,6 +85,46 @@
   run_once: true
   file: path=/etc/nginx/conf.d/example_ssl.conf state=absent
 
+- name: Remove example ssl conf.d
+  run_once: true
+  file: path=/etc/nginx/conf.d/ssl.conf state=absent  
+
+- name: Remove gent.conf
+  run_once: true
+  file: path=/etc/nginx/conf.d/agent.conf state=absent 
+
+- name: Remove cache-file-descriptors.conf
+  run_once: true
+  file: path=/etc/nginx/conf.d/cache-file-descriptors.conf state=absent
+
+- name: Remove gzip.conf
+  run_once: true
+  file: path=/etc/nginx/conf.d/gzip.conf state=absent
+
+- name: Remove header.conf
+  run_once: true
+  file: path=/etc/nginx/conf.d/header.conf state=absent
+
+- name: Remove real_ip.conf
+  run_once: true
+  file: path=/etc/nginx/conf.d/real_ip.conf state=absent
+
+- name: Remove log.conf
+  run_once: true
+  file: path=/etc/nginx/conf.d/log.conf state=absent
+
+- name: Remove fastcgi.conf
+  run_once: true
+  file: path=/etc/nginx/conf.d/fastcgi.conf state=absent
+
+- name: Remove blockip.conf
+  run_once: true
+  file: path=/etc/nginx/conf.d/blockip.conf state=absent
+
+- name: Remove limit_request.conf
+  run_once: true
+  file: path=/etc/nginx/conf.d/limit_request.conf state=absent
+        
 - name: Ensure main docroot exists
   run_once: true
   file: path={{ www_root }} state=directory
