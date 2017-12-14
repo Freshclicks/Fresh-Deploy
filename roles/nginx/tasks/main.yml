@@ -27,6 +27,10 @@
   # The notify will call the ../handlers/main.yml
   notify: service nginx restart
 
+- name: Remove stock conf in conf.d
+  run_once: true
+  file: path=/etc/nginx/conf.d/*.conf state=absent
+
 - name: "Set up NGINX conf.d pagespeed"
   template: src=pagespeed.conf dest=/etc/nginx/conf.d/
 
