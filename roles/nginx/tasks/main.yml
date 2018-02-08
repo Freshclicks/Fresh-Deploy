@@ -18,12 +18,15 @@
   run_once: true
   shell: sudo /usr/sbin/update-rc.d -f nginx defaults
 
-- name: "create sites-available directory"
-  file: path=/etc/nginx/sites-available state=directory
-
-- name: "create sites-enabled directory"
-  file: path=/etc/nginx/sites-enabled state=directory
-  
+- name: Ensure /etc/nginx directories exist
+  run_once: true
+  file: path={{ item }} state=directory owner=root group=root mode=0755
+  with_items:
+    - /etc/nginx/sites-available
+    - /etc/nginx/sites-enabled
+    - /etc/nginx/global 
+    - /etc/nginx/server
+    - /var/cache/nginx 
 
 #remove default files
 - name: Remove default conf.d
@@ -78,6 +81,9 @@
 
 - name: "Set server pagespeed"
   template: src=server/pagespeed.conf dest=/etc/nginx/server/
+
+- name: "Set global pagespeed"
+  template: src=global/pagespeed.conf dest=/etc/nginx/global/
 
 ## rest of the nginx configuration work
 
