@@ -21,6 +21,8 @@
 - name: "create sites-available directory"
   file: path=/etc/nginx/sites-available state=directory
 
+- name: "create sites-enabled directory"
+  file: path=/etc/nginx/sites-enabled state=directory
   
 
 #remove default files
