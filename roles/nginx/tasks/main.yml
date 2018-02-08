@@ -2,24 +2,21 @@
 
 # Setup NGINX Repository
 
-- name: Adding NGINX Repository Key, Hold on...
-  apt_key:
-    id: B9C9F7DE
-    url: http://download.opensuse.org/repositories/home:AnsiPress/xUbuntu_16.04/Release.key
-  register: apt_key
-  when: ansible_distribution == 'Ubuntu'
+- name: building and installing NGINX from source and compiled with mod_pagespeed
+  run_once: true
+  command: bash <(curl -f -L -sS https://ngxpagespeed.com/install) --assume-yes --nginx-version latest -a '--prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --modules-path=/usr/lib/nginx/modules --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock --http-client-body-temp-path=/var/cache/nginx/client_temp --http-proxy-temp-path=/var/cache/nginx/proxy_temp --http-fastcgi-temp-path=/var/cache/nginx/fastcgi_temp --http-uwsgi-temp-path=/var/cache/nginx/uwsgi_temp --http-scgi-temp-path=/var/cache/nginx/scgi_temp --user=nginx --group=nginx --with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with-http_dav_module --with-http_flv_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_mp4_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-mail --with-mail_ssl_module --with-stream --with-stream_realip_module --with-stream_ssl_module --with-stream_ssl_preread_module --with-cc-opt="-g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2 -fPIC" --with-ld-opt="-Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -Wl,--as-needed -pie"'
+  
+- name: add nginx init script for NGINX
+  run_once: true
+  template: src=templates/nginx dest=/etc/init.d/
 
-- name: Adding NGINX Repository, Hold on...
-  apt_repository: repo='deb http://download.opensuse.org/repositories/home:/AnsiPress/xUbuntu_16.04/ /' state=present filename=nginx
-  register: repository
-  when: ansible_distribution == 'Ubuntu'
+- name: make NGINX init file executable
+  command: sudo chmod +x /etc/init.d/nginx
 
-# Execute apt-get update
-- name: Executing apt-get update command, Hold on...
-  apt: update_cache=yes
-  when: repository.changed == True or apt_key.changed == True
+- name: add NGINX init to the default run levels
+  command: sudo /usr/sbin/update-rc.d -f nginx defaults
 
-
+#remove default files
 - name: Remove default conf.d
   run_once: true
   file: path=/etc/nginx/conf.d/default.conf state=absent
@@ -70,17 +67,8 @@
         
 # Setup NGINX pagespeed
 
-- name: Installing NGINX, Hold on...
-  apt: name=nginx-pagespeed state=present
-  register: package_install
-  # The notify will call the ../handlers/main.yml
-  notify: service nginx restart
-
-- name: "Set up NGINX conf.d pagespeed"
-  template: src=pagespeed.conf dest=/etc/nginx/conf.d/
-
 - name: "Set server pagespeed"
-  template: src=global/server/pagespeed.conf dest=/etc/nginx/global/server/
+  template: src=server/pagespeed.conf dest=/etc/nginx/server/
 
 ## rest of the nginx configuration work
 
@@ -101,19 +89,19 @@
   template: src=global/mime-types.conf dest=/etc/nginx/global/
 
 - name: "Set up exclusions"
-  template: src=global/server/exclusions.conf dest=/etc/nginx/global/server/
+  template: src=server/exclusions.conf dest=/etc/nginx/server/
 
 - name: "Set up fastcgi"
-  template: src=global/server/fastcgi-cache.conf dest=/etc/nginx/global/server/
+  template: src=server/fastcgi-cache.conf dest=/etc/nginx/server/
 
 - name: "Set up security"
-  template: src=global/server/security.conf dest=/etc/nginx/global/server/
+  template: src=server/security.conf dest=/etc/nginx/server/
 
 - name: "Set up ssl"
-  template: src=global/server/ssl.conf dest=/etc/nginx/global/server/
+  template: src=server/ssl.conf dest=/etc/nginx/server/
 
 - name: "Set up static file"
-  template: src=global/server/static-files.conf dest=/etc/nginx/global/server/
+  template: src=server/static-files.conf dest=/etc/nginx/server/
 
 - name: Configure /etc/nginx/nginx.conf
   template: src=nginx.conf dest=/etc/nginx/nginx.conf owner=root group=root mode=0644

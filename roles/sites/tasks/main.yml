@@ -10,6 +10,9 @@
 - name: "Set up docroot"
   file: path={{ www_root }}/{{ inventory_hostname }}/public state=directory owner={{ web_user }} group={{ web_group }}
 
+- name: "Set up homepage"
+  template: src=templates/index.php dest={{ www_root }}/{{ inventory_hostname }}/public/ owner=root group=root mode=0644
+
 - name: "Set up cache"
   file: path={{ www_root }}/{{ inventory_hostname }}/cache state=directory owner={{ web_user }} group={{ web_group }}
 
