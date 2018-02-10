@@ -1,5 +1,5 @@
-bash <(curl -f -L -sS https://ngxpagespeed.com/install)  \ 
-&& --nginx-version latest \ 
+bash <(curl -f -L -sS https://ngxpagespeed.com/install)  \
+&& --nginx-version latest \
 && -a '\
 && --prefix=/usr/share/nginx \
 && --sbin-path=/usr/sbin/nginx \
