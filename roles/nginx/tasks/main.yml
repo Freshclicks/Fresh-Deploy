@@ -11,9 +11,7 @@
   copy: src=templates/nginx-source.sh dest=/etc mode=0777
 
 - name: Execute NGINX script
-  shell: /etc/nginx-source.sh
-  args:
-    executable: /bin/bash
+  shell: sudo bash /etc/nginx-source.sh
   
 - name: add nginx init script for NGINX
   run_once: true
