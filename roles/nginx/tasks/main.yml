@@ -29,6 +29,7 @@
     - /etc/nginx/sites-enabled
     - /etc/nginx/global 
     - /etc/nginx/server
+    - /etc/nginx/server/pagespeed
     - /var/cache/nginx 
 
 #remove default files
