@@ -8,7 +8,7 @@
 
 
 - name: Transfer NGINX script
-  copy: src=nginx-source.sh dest=/etc mode=0664
+  copy: src=templates/nginx-source.sh dest=/etc mode=0664
 
 - name: Execute NGINX script
   local_action: command sudo sh /etc/nginx-source.sh
