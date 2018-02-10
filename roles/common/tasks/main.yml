@@ -5,19 +5,44 @@
   sudo: yes
   with_items:
     # - sysv-rc-conf
+    - autojump
+    - autoconf
+    - automake
+    - bc 
+    - bison 
+    - build-essential
+    - ccache 
+    - cmake
+    - curl
+    - dbus
+    - dh-systemd 
+    - flex 
+    - gcc 
+    - geoip-bin 
+    - google-perftools 
+    - git-core
+    - g++ 
+    - icu-devtools 
+    - make 
+    - nano 
+    - perl 
+    - pkg-config
     - python-pycurl
     - python-mysqldb
     - python-software-properties
-    - build-essential
-    - curl
-    - unzip
-    - traceroute
-    # - ack-grep
-    - subversion
-    - autojump
     - siege
-    - git-core
-    - dbus
+    - software-properties-common 
+    - systemtap-sdt-dev 
+    - subversion
+    - traceroute
+    - unzip
+    - webp 
+    - wget 
+    - xtrans-dev 
+    - zip 
+    - zlib1g-dev 
+    - zlibc
+    # - ack-grep
 
 - name: Get Composer
   run_once: true
