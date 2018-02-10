@@ -11,6 +11,6 @@
     - php
     - memcached
     - mariadb
-    - { role: nginx, nginx_pagespeed_enabled: yes, nginx_version: 1.12.2}
+    - nginx
     - wp-cli
     - { role: sites, enviro: php, tags: [ 'sites' ] }
