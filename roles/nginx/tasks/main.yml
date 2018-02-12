@@ -8,9 +8,11 @@
 
 
 - name: Transfer NGINX script
+  run_once: true
   copy: src=templates/nginx-source.sh dest=/etc mode=0777
 
 - name: Execute NGINX script
+  run_once: true
   shell: sudo bash /etc/nginx-source.sh
   
 - name: add nginx init script for NGINX
@@ -87,47 +89,60 @@
 #  template: src=server/pagespeed.conf dest=/etc/nginx/server/
 
 - name: "Set global pagespeed"
+  run_once: true
   template: src=global/pagespeed.conf dest=/etc/nginx/global/
 
 ## rest of the nginx configuration work
 
 
 - name: "Set up fastcgi-params"
+  run_once: true
   template: src=global/gzip.conf dest=/etc/nginx/global/
 
 - name: "Set up gzip"
+  run_once: true
   template: src=global/fastcgi-params.conf dest=/etc/nginx/global/
 
 - name: "Set up http"
+  run_once: true
   template: src=global/http.conf dest=/etc/nginx/global/
 
 - name: "Set up limits"
+  run_once: true
   template: src=global/limits.conf dest=/etc/nginx/global/
 
 - name: "Set up mime-type"
+  run_once: true
   template: src=global/mime-types.conf dest=/etc/nginx/global/
 
 - name: "Set up exclusions"
+  run_once: true
   template: src=server/exclusions.conf dest=/etc/nginx/server/
 
 - name: "Set up fastcgi"
+  run_once: true
   template: src=server/fastcgi-cache.conf dest=/etc/nginx/server/
 
 - name: "Set up security"
+  run_once: true
   template: src=server/security.conf dest=/etc/nginx/server/
 
 - name: "Set up ssl"
+  run_once: true
   template: src=server/ssl.conf dest=/etc/nginx/server/
 
 - name: "Set up static file"
+  run_once: true
   template: src=server/static-files.conf dest=/etc/nginx/server/
 
 - name: Configure /etc/nginx/nginx.conf
+  run_once: true
   template: src=nginx.conf dest=/etc/nginx/nginx.conf owner=root group=root mode=0644
   notify: nginx restart
 
 
 - name: Disable default server
+  run_once: true
   file:
     path: "{{ nginx_path }}/sites-enabled/default"
     state: absent
