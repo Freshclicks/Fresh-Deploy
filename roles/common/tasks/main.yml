@@ -26,7 +26,8 @@
     - g++ 
     - icu-devtools 
     - libfontconfig1 
-    - libgd3 libjbig0
+    - libgd3 
+    - libjbig0
     - libjpeg-turbo8 
     - libjpeg8 
     - libtiff5 
