@@ -33,7 +33,7 @@
     - libtiff5 
     - libvpx3 
     - libxpm4 
-    - libxslt 
+    - libxslt1.1 
     - libxslt
     - libxml2
     - nginx-common
