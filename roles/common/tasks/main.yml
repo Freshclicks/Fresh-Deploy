@@ -17,12 +17,23 @@
     - dbus
     - dh-systemd 
     - flex 
+    - fontconfig-config
+    - fonts-dejavu-core
     - gcc 
     - geoip-bin 
     - google-perftools 
     - git-core
     - g++ 
     - icu-devtools 
+    - libfontconfig1 
+    - libgd3 libjbig0
+    - libjpeg-turbo8 
+    - libjpeg8 
+    - libtiff5 
+    - libvpx3 
+    - libxpm4 
+    - libxslt1.1 
+    - nginx-common
     - make 
     - nano 
     - perl 
