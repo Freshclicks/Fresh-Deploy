@@ -59,8 +59,8 @@
     # - ack-grep
 
 - name: install libxslt1-dev to suport nginx HTTP XSLT module
-    apt: pkg=libxslt1-dev state=installed
-    sudo: True
+  apt: pkg=libxslt1-dev state=installed
+  sudo: True
 
 - name: Get Composer
   run_once: true
