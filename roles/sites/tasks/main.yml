@@ -26,9 +26,6 @@
   file: src=/etc/nginx/sites-available/{{ inventory_hostname }} dest=/etc/nginx/sites-enabled/{{ inventory_hostname }} state=link
   notify: reload nginx
 
-- name: "Enable {{ enviro }} pagespeed"
-  template: src=pagespeed.conf dest=/etc/nginx/server/pagespeed/{{ inventory_hostname }}-pagespeed.conf
-
 #- name: "Download and install WordPress for {{ enviro }}"
 #  command: /usr/local/bin/wp core download --path={{ www_root}}/{{ inventory_hostname }}
 #  sudo: yes
