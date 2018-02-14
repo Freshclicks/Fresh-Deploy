@@ -33,6 +33,7 @@
     - /etc/nginx/server
     - /etc/nginx/server/pagespeed
     - /var/cache/nginx 
+    - /usr/src/modules
 
 #remove default files
 - name: Remove default conf.d
