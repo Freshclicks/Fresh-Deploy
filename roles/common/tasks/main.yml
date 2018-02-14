@@ -48,6 +48,7 @@
     - subversion
     - traceroute
     - unzip
+    - uuid-dev
     - webp 
     - wget 
     - xtrans-dev 
