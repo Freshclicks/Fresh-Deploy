@@ -34,7 +34,7 @@
     - /etc/nginx/server/pagespeed
     - /var/cache/nginx 
     - /usr/src/modules
-
+#added
 #remove default files
 - name: Remove default conf.d
   run_once: true
