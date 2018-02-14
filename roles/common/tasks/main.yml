@@ -21,6 +21,7 @@
     - fonts-dejavu-core
     - gcc 
     - geoip-bin 
+    - libgeoip-dev
     - google-perftools 
     - git-core
     - g++ 
