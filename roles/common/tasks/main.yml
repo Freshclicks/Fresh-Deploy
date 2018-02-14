@@ -62,6 +62,7 @@
 
 - name: install libxslt1-dev to suport nginx HTTP XSLT module
   apt: pkg=libxslt1-dev state=installed
+  run_once: true
   sudo: True
 
 - name: Get Composer
