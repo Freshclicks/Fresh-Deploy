@@ -11,6 +11,8 @@
   run_once: true
   copy: src=templates/nginx-source.sh dest=/etc mode=0777
 
+  # remove shell script after succesful install
+
 - name: Execute NGINX script
   run_once: true
   shell: sudo bash /etc/nginx-source.sh
@@ -34,10 +36,9 @@
     - /etc/nginx/sites-enabled
     - /etc/nginx/global 
     - /etc/nginx/server
-    - /etc/nginx/server/pagespeed
     - /var/cache/nginx 
     - /usr/src/modules
-#added
+
 #remove default files
 - name: Remove default conf.d
   run_once: true
