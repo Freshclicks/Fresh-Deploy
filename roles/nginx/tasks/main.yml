@@ -21,7 +21,10 @@
 
 - name: Start and enable NGINX service
   run_once: true
-  shell: sudo systemctl start nginx.service && sudo systemctl enable nginx.service
+  shell: sudo systemctl start nginx.service 
+  
+  # removed as it seems the sysmlink is enabled during install.
+  # sudo systemctl enable nginx.service
 
 - name: Ensure /etc/nginx directories exist
   run_once: true
