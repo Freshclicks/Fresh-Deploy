@@ -58,6 +58,10 @@
     - zlibc
     # - ack-grep
 
+- name: install libxslt1-dev to suport nginx HTTP XSLT module
+    apt: pkg=libxslt1-dev state=installed
+    sudo: True
+
 - name: Get Composer
   run_once: true
   get_url: url=https://getcomposer.org/composer.phar dest=/usr/local/bin/composer mode=0755 validate_certs=no
