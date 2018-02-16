@@ -14,7 +14,7 @@ sudo ls -l /etc/letsencrypt/live/{{ inventory_hostname }}
 sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
 
 Step 3: 
-sudo nano /etc/nginx/global/server/ssl-{{ inventory_hostname }}.conf
+sudo nano /etc/nginx/server/ssl-{{ inventory_hostname }}.conf
 
 ssl_certificate /etc/letsencrypt/live/{{ inventory_hostname }}/fullchain.pem;
 ssl_certificate_key /etc/letsencrypt/live/{{ inventory_hostname }}/privkey.pem;
