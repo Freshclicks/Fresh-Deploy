@@ -26,6 +26,9 @@
   file: src=/etc/nginx/sites-available/{{ inventory_hostname }} dest=/etc/nginx/sites-enabled/{{ inventory_hostname }} state=link
   notify: reload nginx
 
+- name: "Set up logrotate"
+  template: src=logrotate-sites.conf dest=/etc/logrotate.d/{{ inventory_hostname }}
+
 #- name: "Download and install WordPress for {{ enviro }}"
 #  command: /usr/local/bin/wp core download --path={{ www_root}}/{{ inventory_hostname }}
 #  sudo: yes
