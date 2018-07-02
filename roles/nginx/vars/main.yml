@@ -10,7 +10,7 @@ nginx_build_options_defaults:
   http-proxy-temp-path: "{{ nginx_lib_path }}/proxy"
   http-scgi-temp-path: "{{ nginx_lib_path }}/scgi"
   http-uwsgi-temp-path: "{{ nginx_lib_path }}/uwsgi"
-  with-perl_modules_path: "{{ nginx_lib_path }}/perl"
+  # with-perl_modules_path: "{{ nginx_lib_path }}/perl"
   http-log-path: "{{ nginx_log_path }}/access.log"
   lock-path: /var/lock/nginx.lock
   pid-path: "{{ nginx_pid_file }}"
