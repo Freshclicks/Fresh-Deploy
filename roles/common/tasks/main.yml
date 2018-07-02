@@ -37,6 +37,7 @@
     - libxpm4 
     - libxslt1.1 
     - libxml2
+    - libperl-dev
     - nginx-common
     - make 
     - nano 
