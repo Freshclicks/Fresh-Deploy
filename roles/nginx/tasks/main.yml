@@ -116,6 +116,10 @@
   run_once: true
   template: src=global/limits.conf dest=/etc/nginx/global/
 
+- name: "Set up perl lowercase"
+  run_once: true
+  template: src=global/perl-lowercase.conf dest=/etc/nginx/global/
+
 - name: "Set up mime-type"
   run_once: true
   template: src=global/mime-types.conf dest=/etc/nginx/global/
