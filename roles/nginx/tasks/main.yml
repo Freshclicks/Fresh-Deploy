@@ -10,12 +10,16 @@
 - name: Transfer NGINX script
   run_once: true
   copy: src=templates/nginx-source.sh dest=/etc mode=0777
+  become: true
+  become_user: root
 
   # remove shell script after succesful install
 
 - name: Execute NGINX script
   run_once: true
   shell: sudo bash /etc/nginx-source.sh
+  become: true
+  become_user: root
   
 - name: add nginx init script for NGINX
   run_once: true
