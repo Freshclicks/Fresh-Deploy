@@ -1,8 +1,11 @@
 ---
 - name: "Add repository for php7.1."
+  run_once: true
   apt_repository: 
     repo="ppa:ondrej/php" 
     update_cache=yes
+  become: true
+  become_user: root
 #- name: Add php7.1 PPA
 #  apt_repository:
 #    repo: "ppa:ondrej/php"
