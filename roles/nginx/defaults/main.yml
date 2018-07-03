@@ -20,8 +20,8 @@ nginx_build_options:
   with-http_stub_status_module:
   with-ipv6:
   with-pcre-jit:
-nginx_pagespeed_version: 1.11.33.2
-nginx_version: 1.12.2
+nginx_pagespeed_version: 1.13.35.2
+nginx_version: 1.14.0
 nginx_pagespeed_enabled: false
 
 # Fastcgi cache params

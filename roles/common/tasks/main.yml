@@ -32,10 +32,15 @@
     - libjbig0
     - libjpeg-turbo8 
     - libjpeg8 
+    - libperl-dev 
+    - libpcre3
+    - libpcre3-dev
+    - libssl-dev
     - libtiff5 
     - libvpx3 
     - libxpm4 
     - libxslt1.1 
+    - ibxslt1-dev
     - libxml2
     - nginx-common
     - make 
@@ -60,10 +65,6 @@
     - zlibc
     # - ack-grep
 
-- name: install libxslt1-dev to suport nginx HTTP XSLT module
-  apt: pkg=libxslt1-dev state=installed
-  run_once: true
-  sudo: True
 
 - name: Get Composer
   run_once: true
