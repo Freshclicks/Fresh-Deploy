@@ -29,13 +29,13 @@
 
 - name: Ensure /etc/nginx directories exist
   run_once: true
-  file: path={{ item }} state=directory owner=root group=root mode=0755
+  file: path={{ item }} state=directory owner=www-data group=www-data mode=0755
+  recurse: yes
   with_items:
     - /etc/nginx/sites-available
     - /etc/nginx/sites-enabled
     - /etc/nginx/global 
     - /etc/nginx/server
-    - /var/cache/nginx 
     - /var/cache/nginx/fastcgi_temp/
     - /usr/src/modules
 
