@@ -1,14 +1,14 @@
 ---
-- name: "Add repository for php7.1.2."
+- name: "Add repository for php7.1."
   apt_repository: 
     repo="ppa:ondrej/php" 
     update_cache=yes
-#- name: Add php7.1.2 PPA
+#- name: Add php7.1 PPA
 #  apt_repository:
 #    repo: "ppa:ondrej/php"
 #    update_cache: yes
 
-- name: Install php7.1.2
+- name: Install php7.1
   run_once: true
   apt:
     name: "{{ item }}"
