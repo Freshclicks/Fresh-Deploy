@@ -28,8 +28,8 @@
     - icu-devtools 
     - libfontconfig1 
     - libgd3 
-    - libgd2-xpm-dev
-    - libjbig0
+    - libgd2-xpm-dev 
+    - libjbig0 
     - libjpeg-turbo8 
     - libjpeg8 
     - libperl-dev 
