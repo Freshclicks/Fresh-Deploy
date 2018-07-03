@@ -4,14 +4,13 @@
 #    repo: "ppa:ondrej/php"
 #    update_cache: yes
 
-- name: Install PHP 7.1
+- name: Install PHP 7.0
   run_once: true
   apt:
     name: "{{ item }}"
     state: present
     force: yes
   with_items:
-  - php7.1
   - php-cli
   - php-common
   - php-curl
@@ -46,15 +45,15 @@
 #    dest: /etc/php/7.0/mods-available/xdebug.ini
 #  when: xdebug_install | default(false)
 
-- name: Start php7.1-fpm service
+- name: Start php7.0-fpm service
   service:
-    name: php7.1-fpm
+    name: php7.0-fpm
     state: started
     enabled: true
 
 - name: Create socket directory
   file:
-    path: /var/run/php7.1-fpm/
+    path: /var/run/php7.0-fpm/
     state: directory
 
 #- name: Disable default pool
@@ -67,5 +66,5 @@
 - name: PHP configuration file
   template:
     src: php.ini.j2
-    dest: /etc/php/7.1/fpm/php.ini
+    dest: /etc/php/7.0/fpm/php.ini
   notify: reload php-fpm

@@ -12,7 +12,7 @@ I recommend using Digital Ocean servers, and if you use this link https://m.do.c
 This Playbook will setup:
 
 - **MariaDB** (A drop in replacement for MySQL)
-- **PHP** (Native PHP 7.1 from the official Ubuntu 16.04 repo)
+- **PHP** (Native PHP 7.0 from the official Ubuntu 16.04 repo)
 - **Nginx**
 - **Memcached**
 - **Fail2Ban**
