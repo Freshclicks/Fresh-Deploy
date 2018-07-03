@@ -2,7 +2,7 @@
 - name: Install necessary packages for proper system state
   run_once: true
   apt: name={{ item }} state=latest
-  sudo: yes
+  become: true
   with_items:
     # - sysv-rc-conf
     - autojump
