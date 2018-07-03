@@ -1,10 +1,15 @@
 ---
-#- name: Add PHP 7.0 PPA
+pre_tasks:
+    - name: "Add repository for PHP 7.2."
+      apt_repository: 
+        repo="ppa:ondrej/php" 
+        update_cache=yes
+#- name: Add php 7.2 PPA
 #  apt_repository:
 #    repo: "ppa:ondrej/php"
 #    update_cache: yes
 
-- name: Install PHP 7.0
+- name: Install PHP 7.2
   run_once: true
   apt:
     name: "{{ item }}"
@@ -45,15 +50,15 @@
 #    dest: /etc/php/7.0/mods-available/xdebug.ini
 #  when: xdebug_install | default(false)
 
-- name: Start php7.0-fpm service
+- name: Start php7.2-fpm service
   service:
-    name: php7.0-fpm
+    name: php7.2-fpm
     state: started
     enabled: true
 
 - name: Create socket directory
   file:
-    path: /var/run/php7.0-fpm/
+    path: /var/run/php7.2-fpm/
     state: directory
 
 #- name: Disable default pool
