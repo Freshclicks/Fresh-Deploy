@@ -11,6 +11,7 @@
     state: present
     force: yes
   with_items:
+  - php7.1
   - php-cli
   - php-common
   - php-curl
