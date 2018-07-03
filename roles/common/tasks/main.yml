@@ -40,7 +40,7 @@
     - libvpx3 
     - libxpm4 
     - libxslt1.1 
-    - ibxslt1-dev
+    - libxslt1-dev
     - libxml2
     - nginx-common
     - make 
