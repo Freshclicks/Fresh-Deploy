@@ -1,5 +1,16 @@
 ---
-
+- name: Ensure /etc/nginx directories exist
+  run_once: true
+  file: path={{ item }} state=directory owner=www-data group=www-data mode=0755
+  recurse: yes
+  with_items:
+    - /etc/nginx/sites-available
+    - /etc/nginx/sites-enabled
+    - /etc/nginx/global 
+    - /etc/nginx/server
+    - /var/cache/nginx/fastcgi_temp/
+    - /usr/src/modules
+    
 # Setup NGINX Repository
 
 - name: Transfer NGINX script
@@ -26,18 +37,6 @@
   
   # removed as it seems the sysmlink is enabled during install.
   # sudo systemctl enable nginx.service
-
-- name: Ensure /etc/nginx directories exist
-  run_once: true
-  file: path={{ item }} state=directory owner=www-data group=www-data mode=0755
-  recurse: yes
-  with_items:
-    - /etc/nginx/sites-available
-    - /etc/nginx/sites-enabled
-    - /etc/nginx/global 
-    - /etc/nginx/server
-    - /var/cache/nginx/fastcgi_temp/
-    - /usr/src/modules
 
 #remove default files
 - name: Remove default conf.d
