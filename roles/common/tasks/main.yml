@@ -27,6 +27,7 @@
     - g++ 
     - icu-devtools 
     - libfontconfig1 
+    - libcurl4
     - libgd3 
     - libgd2-xpm-dev
     - libjbig0

@@ -46,6 +46,7 @@
     - /etc/nginx/global 
     - /etc/nginx/server
     - /var/cache/nginx 
+    - /var/cache/nginx/client_temp
     - /usr/src/modules
 
 #remove default files
