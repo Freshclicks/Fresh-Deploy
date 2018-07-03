@@ -4,6 +4,7 @@
 
  #get lua module
 - name: Get Lua module for NGINX
+  file: path=/user/src/modules/lua-nginx-module-0.10.13 state=directory owner=root group=root mode=0755
   unarchive:
       src: https://github.com/openresty/lua-nginx-module/archive/v0.10.13.tar.gz
       dest: /user/src/modules/lua-nginx-module-0.10.13
