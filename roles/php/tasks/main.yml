@@ -1,9 +1,8 @@
 ---
-pre_tasks:
-    - name: "Add repository for PHP 7.2."
-      apt_repository: 
-        repo="ppa:ondrej/php" 
-        update_cache=yes
+- name: "Add repository for PHP 7.2."
+  apt_repository: 
+    repo="ppa:ondrej/php" 
+    update_cache=yes
 #- name: Add php 7.2 PPA
 #  apt_repository:
 #    repo: "ppa:ondrej/php"
