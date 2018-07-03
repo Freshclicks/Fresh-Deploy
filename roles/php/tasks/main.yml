@@ -70,5 +70,5 @@
 - name: PHP configuration file
   template:
     src: php.ini.j2
-    dest: /etc/php/7.0/fpm/php.ini
+    dest: /etc/php/7.1/fpm/php.ini
   notify: reload php-fpm
