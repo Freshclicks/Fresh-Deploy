@@ -1,4 +1,4 @@
-# LEMP (Nginx, MariaDB, PHP 7) Deployment Playbook for Ubuntu 16.04
+# LEMP (Nginx, MariaDB, php7.1) Deployment Playbook for Ubuntu 16.04
 
 ## Introduction
 
@@ -12,7 +12,7 @@ I recommend using Digital Ocean servers, and if you use this link https://m.do.c
 This Playbook will setup:
 
 - **MariaDB** (A drop in replacement for MySQL)
-- **PHP** (Native php 7.2 from the official Ubuntu 16.04 repo)
+- **PHP** (Native php7.1.2 from the official Ubuntu 16.04 repo)
 - **Nginx**
 - **Memcached**
 - **Fail2Ban**

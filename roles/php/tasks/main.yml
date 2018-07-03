@@ -1,38 +1,38 @@
 ---
-- name: "Add repository for PHP 7.2."
+- name: "Add repository for php7.1.2."
   apt_repository: 
     repo="ppa:ondrej/php" 
     update_cache=yes
-#- name: Add php 7.2 PPA
+#- name: Add php7.1.2 PPA
 #  apt_repository:
 #    repo: "ppa:ondrej/php"
 #    update_cache: yes
 
-- name: Install PHP 7.2
+- name: Install php7.1.2
   run_once: true
   apt:
     name: "{{ item }}"
     state: present
     force: yes
   with_items:
-  - php 7.1-cli
-  - php 7.1-common
-  - php 7.1-curl
-  - php 7.1-dev
-  - php 7.1-fpm
-  - php 7.1-gd
-  - php 7.1-memcached
-  - php 7.1-mbstring
-  - php 7.1-mcrypt
-  - php 7.1-mysql
-  - php 7.1-opcache
-  - php 7.1-xml
-  - php 7.1-xmlrpc
-  - php 7.1-zip
-  - php 7.1-json
-  - php 7.1-ldap
-  - php 7.1-tidy
-  - php 7.1-recode
+  - php7.1-cli
+  - php7.1-common
+  - php7.1-curl
+  - php7.1-dev
+  - php7.1-fpm
+  - php7.1-gd
+  - php7.1-memcached
+  - php7.1-mbstring
+  - php7.1-mcrypt
+  - php7.1-mysql
+  - php7.1-opcache
+  - php7.1-xml
+  - php7.1-xmlrpc
+  - php7.1-zip
+  - php7.1-json
+  - php7.1-ldap
+  - php7.1-tidy
+  - php7.1-recode
 
 
  # php7.1-json    php7.1-ldap php7.1-tidy php7.1-recode
@@ -49,15 +49,15 @@
 #    dest: /etc/php/7.0/mods-available/xdebug.ini
 #  when: xdebug_install | default(false)
 
-- name: Start php 7.1-fpm service
+- name: Start php7.1-fpm service
   service:
-    name: php 7.1-fpm
+    name: php7.1-fpm
     state: started
     enabled: true
 
 - name: Create socket directory
   file:
-    path: /var/run/php 7.1-fpm/
+    path: /var/run/php7.1-fpm/
     state: directory
 
 #- name: Disable default pool
