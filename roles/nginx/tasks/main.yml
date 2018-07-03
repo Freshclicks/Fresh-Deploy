@@ -2,16 +2,6 @@
 
 # Setup NGINX Repository
 
- #get lua module
-#- name: create a directory for lua module
-#  file: path=/user/src/modules/lua-nginx-module-0.10.13 state=directory owner=root group=root mode=0755
-
-#- name: Get Lua module for NGINX
-#  unarchive:
-#      src: https://github.com/openresty/lua-nginx-module/archive/v0.10.13.tar.gz
-#      dest: /user/src/modules/lua-nginx-module-0.10.13
-#      remote_src: yes
-
 - name: Transfer NGINX script
   run_once: true
   copy: src=templates/nginx-source.sh dest=/etc mode=0777
@@ -46,7 +36,7 @@
     - /etc/nginx/global 
     - /etc/nginx/server
     - /var/cache/nginx 
-    - /var/cache/nginx/client_temp
+    - /var/cache/nginx/fastcgi_temp/
     - /usr/src/modules
 
 #remove default files
