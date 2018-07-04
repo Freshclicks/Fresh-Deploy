@@ -30,6 +30,7 @@ uncomment
     listen [::]:443 ssl http2;
     include /etc/nginx/global/server/ssl-{{ inventory_hostname }}.conf
     include snippets/ssl-params.conf;
+    force lowercase section
 
 sudo nginx -t
 
